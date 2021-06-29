@@ -8,11 +8,13 @@
 
 /* Begin PBXBuildFile section */
 		9DF6C322268A15A200E107E5 /* CountriesApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DF6C321268A15A200E107E5 /* CountriesApp.swift */; };
-		9DF6C324268A15A200E107E5 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DF6C323268A15A200E107E5 /* ContentView.swift */; };
+		9DF6C324268A15A200E107E5 /* CountriesListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DF6C323268A15A200E107E5 /* CountriesListView.swift */; };
 		9DF6C326268A15A400E107E5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9DF6C325268A15A400E107E5 /* Assets.xcassets */; };
 		9DF6C329268A15A400E107E5 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9DF6C328268A15A400E107E5 /* Preview Assets.xcassets */; };
 		9DF6C333268A15A400E107E5 /* CountriesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DF6C332268A15A400E107E5 /* CountriesTests.swift */; };
 		9DF6C33D268A15A400E107E5 /* CountriesUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DF6C33C268A15A400E107E5 /* CountriesUITests.swift */; };
+		9DF6C34A268A15F500E107E5 /* Country.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DF6C349268A15F500E107E5 /* Country.swift */; };
+		9DF6C34C268A175200E107E5 /* CountriesListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DF6C34B268A175200E107E5 /* CountriesListViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -35,13 +37,15 @@
 /* Begin PBXFileReference section */
 		9DF6C31E268A15A200E107E5 /* Countries.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Countries.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9DF6C321268A15A200E107E5 /* CountriesApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountriesApp.swift; sourceTree = "<group>"; };
-		9DF6C323268A15A200E107E5 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		9DF6C323268A15A200E107E5 /* CountriesListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountriesListView.swift; sourceTree = "<group>"; };
 		9DF6C325268A15A400E107E5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9DF6C328268A15A400E107E5 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		9DF6C32E268A15A400E107E5 /* CountriesTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CountriesTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		9DF6C332268A15A400E107E5 /* CountriesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountriesTests.swift; sourceTree = "<group>"; };
 		9DF6C338268A15A400E107E5 /* CountriesUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CountriesUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		9DF6C33C268A15A400E107E5 /* CountriesUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountriesUITests.swift; sourceTree = "<group>"; };
+		9DF6C349268A15F500E107E5 /* Country.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Country.swift; sourceTree = "<group>"; };
+		9DF6C34B268A175200E107E5 /* CountriesListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountriesListViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -92,8 +96,10 @@
 		9DF6C320268A15A200E107E5 /* Countries */ = {
 			isa = PBXGroup;
 			children = (
+				9DF6C349268A15F500E107E5 /* Country.swift */,
 				9DF6C321268A15A200E107E5 /* CountriesApp.swift */,
-				9DF6C323268A15A200E107E5 /* ContentView.swift */,
+				9DF6C323268A15A200E107E5 /* CountriesListView.swift */,
+				9DF6C34B268A175200E107E5 /* CountriesListViewModel.swift */,
 				9DF6C325268A15A400E107E5 /* Assets.xcassets */,
 				9DF6C327268A15A400E107E5 /* Preview Content */,
 			);
@@ -254,8 +260,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9DF6C324268A15A200E107E5 /* ContentView.swift in Sources */,
+				9DF6C324268A15A200E107E5 /* CountriesListView.swift in Sources */,
+				9DF6C34A268A15F500E107E5 /* Country.swift in Sources */,
 				9DF6C322268A15A200E107E5 /* CountriesApp.swift in Sources */,
+				9DF6C34C268A175200E107E5 /* CountriesListViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -423,7 +431,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -432,8 +440,9 @@
 				PRODUCT_BUNDLE_IDENTIFIER = awesome.app.Countries;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZE_OBJECT_LIFETIME = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -453,7 +462,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -462,8 +471,9 @@
 				PRODUCT_BUNDLE_IDENTIFIER = awesome.app.Countries;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZE_OBJECT_LIFETIME = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
