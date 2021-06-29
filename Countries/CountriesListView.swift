@@ -12,7 +12,7 @@ struct CountriesListView: View {
   
   var body: some View {
     NavigationView {
-      List(viewModel.searchResult.map(CountryCell.ViewModel.init), id: \.name, rowContent: CountryCell.init)
+      List(viewModel.searchResult, id: \.name, rowContent: CountryCell.init)
         .searchable(text: $viewModel.searchText)
         .disableAutocorrection(true)
         .refreshable { await viewModel.fetch() }
