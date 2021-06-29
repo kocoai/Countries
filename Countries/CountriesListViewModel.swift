@@ -11,6 +11,7 @@ extension CountriesListView {
   final class ViewModel: ObservableObject {
     @Published var searchText = ""
     @Published var countries = [Country]()
+    
     var searchResult: [Country] {
       guard !searchText.isEmpty else {
         return countries
