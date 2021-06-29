@@ -11,6 +11,9 @@ extension CountriesListView {
   final class ViewModel: ObservableObject {
     @Published var searchText = ""
     @Published var viewModels = [CountryCell.ViewModel]()
+    private var isPopulationAscending = false
+    private var isNameAscending = true
+    private var isAreaAscending = false
     
     var searchResult: [CountryCell.ViewModel] {
       guard !searchText.isEmpty else { return viewModels }
@@ -26,6 +29,33 @@ extension CountriesListView {
       } catch {
         viewModels = []
         print(error)
+      }
+    }
+    
+    func sortByPopulation() {
+      isPopulationAscending.toggle()
+      if isPopulationAscending {
+        viewModels.sort { $0.country.population < $1.country.population }
+      } else {
+        viewModels.sort { $0.country.population > $1.country.population }
+      }
+    }
+    
+    func sortByName() {
+      isNameAscending.toggle()
+      if isNameAscending {
+        viewModels.sort { $0.country.name < $1.country.name }
+      } else {
+        viewModels.sort { $0.country.name > $1.country.name }
+      }
+    }
+    
+    func sortByArea() {
+      isAreaAscending.toggle()
+      if isAreaAscending {
+        viewModels.sort { ($0.country.area ?? 0) < ($1.country.area ?? 0) }
+      } else {
+        viewModels.sort { ($0.country.area ?? 0) > ($1.country.area ?? 0)}
       }
     }
   }

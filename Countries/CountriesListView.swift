@@ -19,7 +19,30 @@ struct CountriesListView: View {
         .listStyle(.insetGrouped)
         .onAppear { async { await viewModel.fetch() } }
         .navigationTitle("Countries list")
+        .navigationBarItems(trailing: sortMenu)
     }
+  }
+  
+  private var sortMenu: some View {
+    Menu {
+      Button("Sort by Name", action: sortByName)
+      Button("Sort by Population", action: sortByPopulation)
+      Button("Sort by Area", action: sortByArea)
+    } label: {
+      Label("Sort", systemImage: "line.3.horizontal.decrease.circle")
+    }
+  }
+  
+  private func sortByName() {
+    viewModel.sortByName()
+  }
+  
+  private func sortByPopulation() {
+    viewModel.sortByPopulation()
+  }
+  
+  private func sortByArea() {
+    viewModel.sortByArea()
   }
 }
 
@@ -47,17 +70,19 @@ struct CountryCell: View {
 
 extension CountryCell {
   struct ViewModel {
+    let country: Country
     var name: String
     var capital: String?
     var population: String
     var area: String?
     
     init(country: Country) {
+      self.country = country
       name = country.name
       capital = country.capital.isEmpty ? nil : country.capital
       population = "Population: \(country.population)"
       if let a = country.area {
-        area = String(format: "Area: %.0f km2", a)
+        area = String(format: "Area: %.2f km2", a)
       }
     }
   }
