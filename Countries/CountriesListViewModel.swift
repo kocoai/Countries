@@ -11,6 +11,9 @@ extension CountriesListView {
   final class ViewModel: ObservableObject {
     @Published var searchText = ""
     @Published var viewModels = [CountryCell.ViewModel]()
+    var sortByNameIcon = ""
+    var sortByPopulationIcon = ""
+    var sortByAreaIcon = ""
     
     var searchResult: [CountryCell.ViewModel] {
       guard !searchText.isEmpty else { return viewModels }
@@ -26,18 +29,27 @@ extension CountriesListView {
           } else {
             viewModels.sort { $0.country.name > $1.country.name }
           }
+          sortByNameIcon = imageName(ascending: ascending)
+          sortByPopulationIcon = ""
+          sortByAreaIcon = ""
         case .byPopulation(let ascending):
           if ascending {
             viewModels.sort { $0.country.population < $1.country.population }
           } else {
             viewModels.sort { $0.country.population > $1.country.population }
           }
+          sortByNameIcon = ""
+          sortByPopulationIcon = imageName(ascending: ascending)
+          sortByAreaIcon = ""
         case .byArea(let ascending):
           if ascending {
             viewModels.sort { ($0.country.area ?? 0) < ($1.country.area ?? 0) }
           } else {
             viewModels.sort { ($0.country.area ?? 0) > ($1.country.area ?? 0)}
           }
+          sortByNameIcon = ""
+          sortByPopulationIcon = ""
+          sortByAreaIcon = imageName(ascending: ascending)
         }
       }
     }
@@ -80,6 +92,10 @@ extension CountriesListView {
     
     func toggleSort() {
       currentSort.toggle()
+    }
+    
+    private func imageName(ascending: Bool) -> String {
+      ascending ? "arrow.up.circle" : "arrow.down.circle"
     }
   }
   
