@@ -25,24 +25,14 @@ struct CountriesListView: View {
   
   private var sortMenu: some View {
     Menu {
-      Button("Sort by Name", action: sortByName)
-      Button("Sort by Population", action: sortByPopulation)
-      Button("Sort by Area", action: sortByArea)
+      Button("Sort by Name", action: viewModel.sortByName)
+      Button("Sort by Population", action: viewModel.sortByPopulation)
+      Button("Sort by Area", action: viewModel.sortByArea)
     } label: {
       Label("Sort", systemImage: "line.3.horizontal.decrease.circle")
+    } primaryAction: {
+      viewModel.toggleSort()
     }
-  }
-  
-  private func sortByName() {
-    viewModel.sortByName()
-  }
-  
-  private func sortByPopulation() {
-    viewModel.sortByPopulation()
-  }
-  
-  private func sortByArea() {
-    viewModel.sortByArea()
   }
 }
 
