@@ -22,6 +22,17 @@ extension CountriesListView {
       }
     }
     
+    var shortLabel: String {
+      switch self {
+      case .byName(_):
+        return "Name"
+      case .byPopulation(_):
+        return "Population"
+      case .byArea(_):
+        return "Area"
+      }
+    }
+    
     var label: String {
       switch self {
       case .byName(_):
