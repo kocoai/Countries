@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9D52604A268D10D000429270 /* CountryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D526049268D10D000429270 /* CountryCell.swift */; };
 		9D7D05A6268CA82C000C45ED /* CountriesSort.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D7D05A5268CA82C000C45ED /* CountriesSort.swift */; };
 		9D7D05A8268CB4B1000C45ED /* Repository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D7D05A7268CB4B1000C45ED /* Repository.swift */; };
 		9D7D05AB268CB77B000C45ED /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 9D7D05AA268CB77B000C45ED /* RealmSwift */; };
@@ -38,6 +39,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		9D526049268D10D000429270 /* CountryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountryCell.swift; sourceTree = "<group>"; };
 		9D7D05A5268CA82C000C45ED /* CountriesSort.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountriesSort.swift; sourceTree = "<group>"; };
 		9D7D05A7268CB4B1000C45ED /* Repository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Repository.swift; sourceTree = "<group>"; };
 		9DF6C31E268A15A200E107E5 /* Countries.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Countries.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -106,6 +108,7 @@
 				9DF6C321268A15A200E107E5 /* CountriesApp.swift */,
 				9DF6C323268A15A200E107E5 /* CountriesListView.swift */,
 				9DF6C34B268A175200E107E5 /* CountriesListViewModel.swift */,
+				9D526049268D10D000429270 /* CountryCell.swift */,
 				9D7D05A5268CA82C000C45ED /* CountriesSort.swift */,
 				9D7D05A7268CB4B1000C45ED /* Repository.swift */,
 				9DF6C325268A15A400E107E5 /* Assets.xcassets */,
@@ -280,6 +283,7 @@
 				9DF6C34C268A175200E107E5 /* CountriesListViewModel.swift in Sources */,
 				9D7D05A6268CA82C000C45ED /* CountriesSort.swift in Sources */,
 				9D7D05A8268CB4B1000C45ED /* Repository.swift in Sources */,
+				9D52604A268D10D000429270 /* CountryCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -12,6 +12,7 @@ import RealmSwift
 protocol Repository {
   func fetchAll() async throws -> [Country]
   func save(countries: [Country]) async throws
+  func fetch(keywords: String) throws -> [Country]
 }
 
 struct RemoteRepository: Repository {
@@ -22,6 +23,7 @@ struct RemoteRepository: Repository {
   }
   
   func save(countries: [Country]) async throws { fatalError() }
+  func fetch(keywords: String) -> [Country] { fatalError() }
 }
 
 struct LocalRepository: Repository {
@@ -36,6 +38,10 @@ struct LocalRepository: Repository {
         realm.add(object, update: .all)
       }
     }
+  }
+  
+  func fetch(keywords: String) throws -> [Country] {
+    return Array(try Realm().objects(CountryObject.self).filter("name contains %@ OR capital contains %@ OR region contains %@", keywords, keywords, keywords))
   }
 }
 

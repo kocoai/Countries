@@ -19,7 +19,8 @@ extension CountriesListView {
       if searchText.isEmpty {
         results = allViewModels
       } else {
-        results = allViewModels.filter { $0.name.contains(searchText) || ($0.capital ?? "").contains(searchText) }
+        let countries = try? local.fetch(keywords: searchText)
+        results = countries?.map { CountryCell.ViewModel(country: $0, keywords: searchText) } ?? allViewModels
       }
       switch currentSort {
       case .byPopulation(ascending: _):
@@ -63,7 +64,7 @@ extension CountriesListView {
         if countries.isEmpty {
           await refresh()
         } else {
-          allViewModels = countries.map(CountryCell.ViewModel.init)
+          allViewModels = countries.map { CountryCell.ViewModel(country: $0, keywords: searchText) }
         }
       } catch {
         print(error)
@@ -73,7 +74,7 @@ extension CountriesListView {
     func refresh() async {
       do {
         let countries = try await remote.fetchAll()
-        allViewModels = countries.map(CountryCell.ViewModel.init)
+        allViewModels = countries.map{ CountryCell.ViewModel(country: $0, keywords: searchText) }
         try await local.save(countries: countries)
       } catch {
         print(error)

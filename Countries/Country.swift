@@ -13,6 +13,7 @@ protocol Country {
   var capital: String { get }
   var population: Int { get }
   var area: Float? { get }
+  var region: String { get }
 }
 
 struct RealCountry: Decodable, Country {
@@ -20,12 +21,14 @@ struct RealCountry: Decodable, Country {
   var capital: String
   var population: Int
   var area: Float?
+  var region: String
 }
 
 final class CountryObject: Object, Country {
   @objc dynamic var name = ""
   @objc dynamic var capital = ""
   @objc dynamic var population = 0
+  @objc dynamic var region = ""
   @objc dynamic var area_: Float = 0
   var area: Float? {
     get { area_ }
@@ -42,6 +45,7 @@ final class CountryObject: Object, Country {
     self.area = country.area
     self.population = country.population
     self.capital = country.capital
+    self.region = country.region
   }
 }
 
