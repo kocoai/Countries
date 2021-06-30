@@ -20,7 +20,7 @@ struct CountriesListView: View {
       .refreshable { await viewModel.refresh() }
       .listStyle(.insetGrouped)
       .onAppear { async { await viewModel.fetch() } }
-      .navigationTitle("Countries list")
+      .navigationTitle("Countries (\(viewModel.searchResult.count))")
       .navigationBarItems(trailing: sortMenu)
     }
   }
