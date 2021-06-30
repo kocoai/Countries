@@ -17,7 +17,7 @@ struct CountriesListView: View {
       }
       .searchable(text: $viewModel.searchText)
       .disableAutocorrection(true)
-      .refreshable { await viewModel.fetch() }
+      .refreshable { await viewModel.refresh() }
       .listStyle(.insetGrouped)
       .onAppear { async { await viewModel.fetch() } }
       .navigationTitle("Countries list")

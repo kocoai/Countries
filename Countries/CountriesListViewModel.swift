@@ -10,9 +10,9 @@ import SwiftUI
 extension CountriesListView {
   final class ViewModel: ObservableObject {
     @Published var searchText = ""
-    @Published var viewModels = [CountryCell.ViewModel]()
+    @Published private var viewModels = [CountryCell.ViewModel]()
     private let remote: Repository = RemoteRepository()
-    
+    private let local: Repository = LocalRepository()
     var searchResult: [CountryCell.ViewModel] {
       guard !searchText.isEmpty else { return viewModels }
       return viewModels.filter { $0.name.contains(searchText) }
@@ -45,8 +45,22 @@ extension CountriesListView {
 
     func fetch() async {
       do {
-        let countries = try await remote.fetch()
+        let countries = try await local.fetchAll()
+        if countries.isEmpty {
+          await refresh()
+        } else {
+          viewModels = countries.map(CountryCell.ViewModel.init)
+        }
+      } catch {
+        print(error)
+      }
+    }
+    
+    func refresh() async {
+      do {
+        let countries = try await remote.fetchAll()
         viewModels = countries.map(CountryCell.ViewModel.init)
+        try await local.save(countries: countries)
       } catch {
         viewModels = []
         print(error)
