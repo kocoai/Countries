@@ -12,14 +12,16 @@ struct CountriesListView: View {
   
   var body: some View {
     NavigationView {
-      List(viewModel.searchResult, id: \.name, rowContent: CountryCell.init)
-        .searchable(text: $viewModel.searchText)
-        .disableAutocorrection(true)
-        .refreshable { await viewModel.fetch() }
-        .listStyle(.insetGrouped)
-        .onAppear { async { await viewModel.fetch() } }
-        .navigationTitle("Countries list")
-        .navigationBarItems(trailing: sortMenu)
+      List(viewModel.searchResult.indices, id: \.self) {
+        CountryCell(index: $0, viewModel: viewModel.searchResult[$0])
+      }
+      .searchable(text: $viewModel.searchText)
+      .disableAutocorrection(true)
+      .refreshable { await viewModel.fetch() }
+      .listStyle(.insetGrouped)
+      .onAppear { async { await viewModel.fetch() } }
+      .navigationTitle("Countries list")
+      .navigationBarItems(trailing: sortMenu)
     }
   }
   
@@ -37,7 +39,7 @@ struct CountriesListView: View {
         }
       }
     } label: {
-      Label("Sort", systemImage: viewModel.currentSort.isAscending ? "arrow.up.circle" : "arrow.down.circle")
+      Image(systemName: viewModel.currentSort.isAscending ? "arrow.up.circle" : "arrow.down.circle")
     } primaryAction: {
       viewModel.toggleSort()
     }
@@ -45,22 +47,29 @@ struct CountriesListView: View {
 }
 
 struct CountryCell: View {
+  let index: Int
   let viewModel: ViewModel
   
   var body: some View {
-    VStack(alignment: .leading) {
-      Text(viewModel.name)
-        .font(.headline)
-      if let capital = viewModel.capital {
-        Text(capital)
-          .foregroundColor(.secondary)
-      }
-      Text(viewModel.population)
-        .font(.caption)
-      if let area = viewModel.area {
-        Text(area)
+    HStack {
+      VStack(alignment: .leading) {
+        Text(viewModel.name)
+          .font(.headline)
+        if let capital = viewModel.capital {
+          Text(capital)
+            .foregroundColor(.secondary)
+        }
+        Text(viewModel.population)
           .font(.caption)
+        if let area = viewModel.area {
+          Text(area)
+            .font(.caption)
+        }
       }
+      Spacer()
+      Text("\(index+1)")
+        .font(.largeTitle)
+        .foregroundColor(.secondary)
     }
     .id(viewModel.name)
   }
@@ -85,7 +94,6 @@ extension CountryCell {
     }
   }
 }
-
 
 struct ContentView_Previews: PreviewProvider {
   static var previews: some View {
