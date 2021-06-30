@@ -25,15 +25,9 @@ struct CountriesListView: View {
   
   private var sortMenu: some View {
     Menu {
-      Button(action: viewModel.sortByName) {
-        Label("Sort by Name", systemImage: viewModel.sortByNameIcon)
-      }
-      Button(action: viewModel.sortByPopulation) {
-        Label("Sort by Population", systemImage: viewModel.sortByPopulationIcon)
-      }
-      Button(action: viewModel.sortByArea) {
-        Label("Sort by Area", systemImage: viewModel.sortByAreaIcon)
-      }
+      Button("Sort by Name", action: viewModel.sortByName)
+      Button("Sort by Population", action: viewModel.sortByPopulation)
+      Button("Sort by Area", action: viewModel.sortByArea)
     } label: {
       Label("Sort", systemImage: "line.3.horizontal.decrease.circle")
     } primaryAction: {
