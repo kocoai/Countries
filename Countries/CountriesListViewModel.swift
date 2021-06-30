@@ -17,7 +17,7 @@ extension CountriesListView {
       return viewModels.filter { $0.name.contains(searchText) }
     }
     
-    private var currentSort = Sort.byName(ascending: true) {
+    var currentSort = Sort.byName(ascending: true) {
       didSet {
         switch currentSort {
         case .byName(let ascending):
@@ -54,51 +54,8 @@ extension CountriesListView {
       }
     }
     
-    func sortByName() {
-      if case .byName = currentSort {
-        currentSort.toggle()
-      } else {
-        currentSort = .byName(ascending: true)
-      }
-    }
-    
-    func sortByPopulation() {
-      if case .byPopulation = currentSort {
-        currentSort.toggle()
-      } else {
-        currentSort = .byPopulation(ascending: false)
-      }
-    }
-    
-    func sortByArea() {
-      if case .byArea = currentSort {
-        currentSort.toggle()
-      } else {
-        currentSort = .byArea(ascending: false)
-      }
-    }
-    
     func toggleSort() {
       currentSort.toggle()
-    }
-    
-    private func imageName(ascending: Bool) -> String {
-      ascending ? "arrow.up.circle" : "arrow.down.circle"
-    }
-  }
-  
-  enum Sort {
-    case byName(ascending: Bool), byPopulation(ascending: Bool), byArea(ascending: Bool)
-    
-    mutating func toggle() {
-      switch self {
-      case .byName(let ascending):
-        self = .byName(ascending: !ascending)
-      case .byPopulation(let ascending):
-        self = .byPopulation(ascending: !ascending)
-      case .byArea(let ascending):
-        self = .byArea(ascending: !ascending)
-      }
     }
   }
 }

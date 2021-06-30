@@ -25,11 +25,19 @@ struct CountriesListView: View {
   
   private var sortMenu: some View {
     Menu {
-      Button("Sort by Name", action: viewModel.sortByName)
-      Button("Sort by Population", action: viewModel.sortByPopulation)
-      Button("Sort by Area", action: viewModel.sortByArea)
+      ForEach(CountriesListView.Sort.allCases) { sort in
+        Button {
+          sort.update(current: &viewModel.currentSort)
+        } label: {
+          if let image = sort.icon(current: viewModel.currentSort) {
+            Label(sort.label, systemImage: image)
+          } else {
+            Text(sort.label)
+          }
+        }
+      }
     } label: {
-      Label("Sort", systemImage: "line.3.horizontal.decrease.circle")
+      Label("Sort", systemImage: viewModel.currentSort.isAscending ? "arrow.up.circle" : "arrow.down.circle")
     } primaryAction: {
       viewModel.toggleSort()
     }
