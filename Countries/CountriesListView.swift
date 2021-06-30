@@ -19,7 +19,7 @@ struct CountriesListView: View {
       .disableAutocorrection(true)
       .refreshable { await viewModel.refresh() }
       .listStyle(.insetGrouped)
-      .onAppear { async { await viewModel.fetch() } }
+      .onAppear { async { await viewModel.load() } }
       .navigationTitle("Countries (\(viewModel.searchResult.count))")
       .navigationBarItems(trailing: sortMenu)
     }
@@ -45,7 +45,7 @@ struct CountriesListView: View {
         Image(systemName: viewModel.currentSort.isAscending ? "arrow.up.circle" : "arrow.down.circle")
       }
     } primaryAction: {
-      viewModel.toggleSort()
+      viewModel.currentSort.toggleAscending()
     }
   }
 }

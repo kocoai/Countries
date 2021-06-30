@@ -13,6 +13,7 @@ extension CountriesListView {
     @Published private var allViewModels = [CountryCell.ViewModel]()
     private let remote: Repository = RemoteRepository()
     private let local: Repository = LocalRepository()
+    
     var searchResult: [CountryCell.ViewModel] {
       var results: [CountryCell.ViewModel]
       if searchText.isEmpty {
@@ -56,7 +57,7 @@ extension CountriesListView {
       }
     }
 
-    func fetch() async {
+    func load() async {
       do {
         let countries = try await local.fetchAll()
         if countries.isEmpty {
@@ -77,10 +78,6 @@ extension CountriesListView {
       } catch {
         print(error)
       }
-    }
-    
-    func toggleSort() {
-      currentSort.toggle()
     }
   }
 }

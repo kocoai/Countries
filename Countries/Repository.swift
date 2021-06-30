@@ -21,8 +21,7 @@ struct RemoteRepository: Repository {
     return try JSONDecoder().decode([RealCountry].self, from: data)
   }
   
-  func save(countries: [Country]) async throws {}
-  func fetch(keywords: String) async throws -> [Country] { fatalError() }
+  func save(countries: [Country]) async throws { fatalError() }
 }
 
 struct LocalRepository: Repository {
@@ -38,7 +37,6 @@ struct LocalRepository: Repository {
       }
     }
   }
-  
 }
 
 enum RepositoryError: Error {

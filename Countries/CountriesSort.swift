@@ -67,10 +67,10 @@ extension CountriesListView {
         }
         return
       }
-      current.toggle()
+      current.toggleAscending()
     }
     
-    mutating func toggle() {
+    mutating func toggleAscending() {
       switch self {
       case .byName(let ascending):
         self = .byName(ascending: !ascending)
