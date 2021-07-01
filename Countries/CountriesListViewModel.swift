@@ -11,10 +11,9 @@ extension CountriesListView {
   final class ViewModel: ObservableObject {
     @Published var searchText = ""
     @Published private var allCountries = [CountryCell.ViewModel]()
+    @Published private var regions = [String]()
     private let remote = RemoteRepository()
     private let local = LocalRepository()
-    private var groupedCountries = [[Country]]()
-    private var regions = [String]()
     
     var viewModels: [[CountryCell.ViewModel]] {
       guard isGrouped else {
@@ -35,12 +34,8 @@ extension CountriesListView {
         }
         return [results]
       }
-      
-      return regions.map {
-         try! local.fetch(region: $0, keywords: searchText)
-          .map { CountryCell.ViewModel(country: $0, keywords: searchText) }
+      return regions.map { try! local.fetch(region: $0, keywords: searchText).map { CountryCell.ViewModel(country: $0, keywords: searchText) }
       }
-      
     }
     
     var currentSort = Sort.byName(ascending: true) {
@@ -70,7 +65,7 @@ extension CountriesListView {
     }
     
     var showIndex: Bool {
-      searchText.isEmpty
+      searchText.isEmpty && !isGrouped
     }
     
     var isGrouped: Bool {

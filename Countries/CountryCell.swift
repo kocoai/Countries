@@ -48,35 +48,32 @@ struct CountryCell: View {
 extension CountryCell {
   final class ViewModel:ObservableObject {
     let country: Country
-    var name: AttributedString {
-      var atr = AttributedString(country.name_)
-      if let range = atr.range(of: keywords) {
-        atr[range].backgroundColor = .yellow
-      }
-      return atr
-    }
-    var capital: AttributedString? {
-      guard country.capital_.isEmpty == false else { return nil }
-      var atr = AttributedString(country.capital_)
-      if let range = atr.range(of: keywords) {
-        atr[range].backgroundColor = .yellow
-      }
-      return atr
-    }
-    var region: AttributedString {
-      var atr = AttributedString(country.region_)
-      if let range = atr.range(of: keywords) {
-        atr[range].backgroundColor = .yellow
-      }
-      return atr
-    }
+    var name: AttributedString
+    var capital: AttributedString?
+    var region: AttributedString
     var population: String
     var area: String?
-    private var keywords: String
     
     init(country: Country, keywords: String) {
       self.country = country
-      self.keywords = keywords
+      
+      name = AttributedString(country.name_)
+      if let range = name.range(of: keywords) {
+        name[range].backgroundColor = .yellow
+      }
+      
+      if !country.capital_.isEmpty {
+        capital = AttributedString(country.capital_)
+        if let range = capital?.range(of: keywords) {
+          capital?[range].backgroundColor = .yellow
+        }
+      }
+      
+      region = AttributedString(country.region_)
+      if let range = region.range(of: keywords) {
+        region[range].backgroundColor = .yellow
+      }
+      
       population = "Population: \(country.population_.formatted)"
       if country.area_ > 0 {
         area = "Area: \(country.area_.formatted) km2"

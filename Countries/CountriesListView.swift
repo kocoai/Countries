@@ -26,34 +26,48 @@ struct CountriesListView: View {
       .refreshable { await viewModel.refresh() }
       .listStyle(.insetGrouped)
       .onAppear { async { await viewModel.load() } }
-      .navigationTitle("Countries (\(viewModel.viewModels.count))")
+      .navigationTitle("Countries")
       .navigationBarItems(trailing: sortMenu)
     }
   }
   
   private var sortMenu: some View {
     Menu {
-      ForEach(CountriesListView.Sort.allCases) { sort in
-        Button {
-          sort.toggle(&viewModel.currentSort)
-        } label: {
-          if let image = sort.icon(viewModel.currentSort) {
-            Label(sort.label, systemImage: image)
-          } else {
-            Text(sort.label)
-          }
-        }
+      ForEach(CountriesListView.Sort.allCases, content: sortMenuItem)
+      Button("Group by Region") {
+        viewModel.groupByRegion()
       }
     } label: {
-      HStack {
-        Text(viewModel.currentSort.shortLabel)
-          .font(.caption)
-        Image(systemName: viewModel.currentSort.isAscending ? "arrow.up.circle" : "arrow.down.circle")
+      if viewModel.isGrouped {
+        HStack {
+          Text("Region")
+            .font(.caption)
+          Image(systemName: "rectangle.grid.1x2")
+        }
+      } else {
+        HStack {
+          Text(viewModel.currentSort.shortLabel)
+            .font(.caption)
+          Image(systemName: viewModel.currentSort.isAscending ? "arrow.up.circle" : "arrow.down.circle")
+        }
       }
     } primaryAction: {
       viewModel.currentSort.toggleAscending()
     }
   }
+  
+  private func sortMenuItem(_ sort: CountriesListView.Sort) -> some View {
+    Button {
+      sort.toggle(&viewModel.currentSort)
+    } label: {
+      if let image = sort.icon(viewModel.currentSort) {
+        Label(sort.label, systemImage: image)
+      } else {
+        Text(sort.label)
+      }
+    }
+  }
+
 }
 
 struct ContentView_Previews: PreviewProvider {

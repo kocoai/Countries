@@ -36,11 +36,15 @@ struct LocalRepository {
   }
   
   func fetch(region: String, keywords: String) throws -> [Country] {
-    return Array(try Realm()
-                  .objects(CountryObject.self)
-                  .filter("region_ == %@", region)
-                  .filter("name_ contains %@ OR capital_ contains %@", keywords, keywords)
-                  .sorted(byKeyPath: "name"))
+    let countries = try Realm().objects(CountryObject.self).filter("region_ == %@", region)
+    if keywords.isEmpty {
+      return Array(countries.sorted(byKeyPath: "name_"))
+    } else {
+      return Array(countries
+                    .filter("name_ contains %@ OR capital_ contains %@", keywords, keywords)
+                    .sorted(byKeyPath: "name_"))
+    }
+    
   }
 }
 
