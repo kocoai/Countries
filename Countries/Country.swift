@@ -17,17 +17,18 @@ protocol Country {
 }
 
 struct RealCountry: Decodable, Country {
+  var name: String
+  var capital: String
+  var population: Int
+  var area: Float?
+  var region: String
+  
   var name_: String { name }
   var capital_: String { capital }
   var population_: Int { population }
   var area_: Float { area ?? 0 }
   var region_: String { region }
   
-  var name: String
-  var capital: String
-  var population: Int
-  var area: Float?
-  var region: String
 }
 
 final class CountryObject: Object, Country {

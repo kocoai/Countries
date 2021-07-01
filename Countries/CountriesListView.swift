@@ -13,10 +13,20 @@ struct CountriesListView: View {
   var body: some View {
     NavigationView {
       List {
-        ForEach(viewModel.viewModels.indices, id: \.self) { section in
-          Section(header: Text(viewModel.sectionName(section: section))) {
-            ForEach(viewModel.viewModels[section].indices, id: \.self) { row in
-              CountryCell(index: row, viewModel: viewModel.viewModels[section][row], showIndex: viewModel.showIndex)
+        if viewModel.isGrouped {
+          ForEach(viewModel.regions, id: \.self) { section in
+            Section(section) {
+              ForEach(viewModel.rowsForSection(section: section), id: \.country.name_) { cellVM in
+                CountryCell(index: 0, viewModel: cellVM, showIndex: viewModel.showIndex)
+                  .listRowSeparator(.hidden)
+              }
+            }
+          }
+        } else {
+          Section(viewModel.sectionName) {
+            ForEach(viewModel.rows, id: \.country.name_) {
+              CountryCell(index: 0, viewModel: $0, showIndex: viewModel.showIndex)
+                .listRowSeparator(.hidden)
             }
           }
         }
@@ -24,7 +34,6 @@ struct CountriesListView: View {
       .searchable(text: $viewModel.searchText)
       .disableAutocorrection(true)
       .refreshable { await viewModel.refresh() }
-      .listStyle(.insetGrouped)
       .onAppear { async { await viewModel.load() } }
       .navigationTitle("Countries")
       .navigationBarItems(trailing: sortMenu)
@@ -33,7 +42,7 @@ struct CountriesListView: View {
   
   private var sortMenu: some View {
     Menu {
-      ForEach(CountriesListView.Sort.allCases, content: sortMenuItem)
+      ForEach(Sort.allCases, content: sortMenuItem)
       Button("Group by Region") {
         viewModel.groupByRegion()
       }
@@ -56,7 +65,7 @@ struct CountriesListView: View {
     }
   }
   
-  private func sortMenuItem(_ sort: CountriesListView.Sort) -> some View {
+  private func sortMenuItem(_ sort: Sort) -> some View {
     Button {
       sort.toggle(&viewModel.currentSort)
     } label: {

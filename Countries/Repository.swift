@@ -18,8 +18,35 @@ struct RemoteRepository {
 }
 
 struct LocalRepository {
-  func fetchAll() throws -> [Country] {
-    return Array(try Realm().objects(CountryObject.self))
+  func fetchAllSortByName(_ ascending: Bool = true) -> [Country] {
+    do {
+      return Array(try Realm().objects(CountryObject.self).sorted(byKeyPath: "name_", ascending: ascending))
+    } catch{
+      print(error)
+      return []
+    }
+  }
+  
+  func fetchAllSortByPopulation(_ ascending: Bool = true) -> [Country] {
+    do {
+      return Array(try Realm().objects(CountryObject.self)
+                    .filter("population_ > 0")
+                    .sorted(byKeyPath: "population_", ascending: ascending))
+    } catch{
+      print(error)
+      return []
+    }
+  }
+  
+  func fetchAllSortByArea(_ ascending: Bool = true) -> [Country] {
+    do {
+      return Array(try Realm().objects(CountryObject.self)
+                    .filter("area_ > 0")
+                    .sorted(byKeyPath: "area_", ascending: ascending))
+    } catch{
+      print(error)
+      return []
+    }
   }
   
   func save(countries: [Country]) throws {
@@ -31,18 +58,20 @@ struct LocalRepository {
     }
   }
   
-  func fetch(keywords: String) throws -> [Country] {
-    return Array(try Realm().objects(CountryObject.self).filter("name_ contains %@ OR capital_ contains %@ OR region_ contains %@", keywords, keywords, keywords))
+  func fetch(keywords: String, sort: Sort) throws -> [Country] {
+    return Array(try Realm().objects(CountryObject.self)
+                  .filter("name_ contains %@ OR capital_ contains %@ OR region_ contains %@", keywords, keywords, keywords)
+                  .sorted(byKeyPath: sort.keyPath, ascending: sort.isAscending))
   }
   
-  func fetch(region: String, keywords: String) throws -> [Country] {
+  func fetch(region: String, keywords: String, sort: Sort) throws -> [Country] {
     let countries = try Realm().objects(CountryObject.self).filter("region_ == %@", region)
     if keywords.isEmpty {
-      return Array(countries.sorted(byKeyPath: "name_"))
+      return Array(countries.sorted(byKeyPath: sort.keyPath, ascending: sort.isAscending))
     } else {
       return Array(countries
                     .filter("name_ contains %@ OR capital_ contains %@", keywords, keywords)
-                    .sorted(byKeyPath: "name_"))
+                    .sorted(byKeyPath: sort.keyPath, ascending: sort.isAscending))
     }
     
   }

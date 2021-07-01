@@ -10,98 +10,63 @@ import SwiftUI
 extension CountriesListView {
   final class ViewModel: ObservableObject {
     @Published var searchText = ""
-    @Published private var allCountries = [CountryCell.ViewModel]()
-    @Published private var regions = [String]()
-    private let remote = RemoteRepository()
-    private let local = LocalRepository()
+    @Published var isGrouped: Bool = false
+    @Published private var all = [CountryCell.ViewModel]()
     
-    var viewModels: [[CountryCell.ViewModel]] {
-      guard isGrouped else {
-        var results: [CountryCell.ViewModel]
-        if searchText.isEmpty {
-          results = allCountries
-        } else {
-          let countries = try? local.fetch(keywords: searchText)
-          results = countries?.map { CountryCell.ViewModel(country: $0, keywords: searchText) } ?? allCountries
-        }
-        switch currentSort {
-        case .byPopulation(ascending: _):
-          results = results.filter { $0.country.population_ > 0 }
-        case .byArea(ascending: _):
-          results = results.filter { $0.country.area_ > 0 }
-        default:
-          break
-        }
-        return [results]
+    var rows: [CountryCell.ViewModel] {
+      guard searchText.isEmpty else {
+        let countries = try? local.fetch(keywords: searchText, sort: currentSort)
+        return countries?.map { CountryCell.ViewModel(country: $0, keywords: searchText) } ?? all
       }
-      return regions.map { try! local.fetch(region: $0, keywords: searchText).map { CountryCell.ViewModel(country: $0, keywords: searchText) }
-      }
+      return all
     }
     
+    let regions = ["Africa", "Americas", "Asia", "Europe", "Oceania"]
+    private let remote = RemoteRepository()
+    private let local = LocalRepository()
+    var sectionName: String { "Count: \(rows.count)" }
     var currentSort = Sort.byName(ascending: true) {
       didSet {
+        isGrouped = false
         switch currentSort {
         case .byName(let ascending):
-          if ascending {
-            allCountries.sort { $0.country.name_ < $1.country.name_ }
-          } else {
-            allCountries.sort { $0.country.name_ > $1.country.name_ }
-          }
+          all = local.fetchAllSortByName(ascending).map { CountryCell.ViewModel(country: $0, keywords: searchText) }
         case .byPopulation(let ascending):
-          if ascending {
-            allCountries.sort { $0.country.population_ < $1.country.population_ }
-          } else {
-            allCountries.sort { $0.country.population_ > $1.country.population_ }
-          }
+          all = local.fetchAllSortByPopulation(ascending).map { CountryCell.ViewModel(country: $0, keywords: searchText) }
         case .byArea(let ascending):
-          if ascending {
-            allCountries.sort { $0.country.area_ < $1.country.area_ }
-          } else {
-            allCountries.sort { $0.country.area_ > $1.country.area_ }
-          }
+          all = local.fetchAllSortByArea(ascending).map { CountryCell.ViewModel(country: $0, keywords: searchText) }
         }
-        regions = []
       }
     }
     
     var showIndex: Bool {
       searchText.isEmpty && !isGrouped
     }
-    
-    var isGrouped: Bool {
-      regions.count > 1
-    }
 
     func load() async {
-      do {
-        allCountries = try local.fetchAll()
-          .map { CountryCell.ViewModel(country: $0, keywords: searchText) }
-        if allCountries.isEmpty {
-          await refresh()
-        }
-      } catch {
-        print(error)
+      all = local.fetchAllSortByName().map { CountryCell.ViewModel(country: $0, keywords: searchText) }
+      if all.isEmpty {
+        await refresh()
       }
     }
     
     func refresh() async {
       do {
-        let all = try await remote.fetchAll()
-        allCountries = all.map { CountryCell.ViewModel(country: $0, keywords: searchText) }
-        try local.save(countries: all)
+        let result = try await remote.fetchAll()
+        all = result.map { CountryCell.ViewModel(country: $0, keywords: searchText) }
+        try local.save(countries: result)
       } catch {
         print(error)
       }
     }
     
     func groupByRegion() {
-      regions = ["Africa", "Americas", "Asia", "Europe", "Oceania"]
+      isGrouped = true
     }
-
-    func sectionName(section: Int) -> String {
-      guard isGrouped else { return "Count: \(viewModels.first?.count ?? 0)" }
-      return "\(regions[section]): \(viewModels[section].count)"
+    
+    func rowsForSection(section: String) -> [CountryCell.ViewModel] {
+      let viewModels = try? local.fetch(region: section, keywords: searchText, sort: currentSort).map { CountryCell.ViewModel(country: $0, keywords: searchText) }
+      return viewModels ?? []
     }
-
   }
 }
