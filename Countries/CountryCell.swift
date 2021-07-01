@@ -57,32 +57,28 @@ extension CountryCell {
     init(country: Country, keywords: String, index: Int) {
       self.country = country
       self.index = index
-      
-      name = AttributedString(country.name_)
-      if let range = name.range(of: keywords) {
-        name[range].backgroundColor = .yellow
-        name[range].foregroundColor = .black
-      }
-      
+      name = country.name_.highlight(keywords)
       if !country.capital_.isEmpty {
-        capital = AttributedString(country.capital_)
-        if let range = capital?.range(of: keywords) {
-          capital?[range].backgroundColor = .yellow
-          capital?[range].foregroundColor = .black
-        }
+        capital = country.capital_.highlight(keywords)
       }
-      
-      region = AttributedString(country.region_)
-      if let range = region.range(of: keywords) {
-        region[range].backgroundColor = .yellow
-        region[range].foregroundColor = .black
-      }
+      region = country.region_.highlight(keywords)
       
       population = "Population: \(country.population_.formatted)"
       if country.area_ > 0 {
         area = "Area: \(country.area_.formatted) km2"
       }
     }
+  }
+}
+
+extension String {
+  func highlight(_ keywords: String) -> AttributedString {
+    var atr = AttributedString(self)
+    if let range = atr.range(of: keywords) {
+      atr[range].backgroundColor = .yellow
+      atr[range].foregroundColor = .black
+    }
+    return atr
   }
 }
 
