@@ -10,27 +10,27 @@ import SwiftUI
 extension CountriesListView {
   final class ViewModel: ObservableObject {
     @Published var searchText = ""
-    @Published private var allViewModels = [CountryCell.ViewModel]()
-    private let remote: Repository = RemoteRepository()
-    private let local: Repository = LocalRepository()
+    @Published private var allCountries = [Country]()
+    private let remote = RemoteRepository()
+    private let local = LocalRepository()
     
     var searchResult: [CountryCell.ViewModel] {
-      var results: [CountryCell.ViewModel]
+      var results: [Country]
       if searchText.isEmpty {
-        results = allViewModels
+        results = allCountries
       } else {
         let countries = try? local.fetch(keywords: searchText)
-        results = countries?.map { CountryCell.ViewModel(country: $0, keywords: searchText) } ?? allViewModels
+        results = countries ?? allCountries
       }
       switch currentSort {
       case .byPopulation(ascending: _):
-        results = results.filter { $0.country.population > 0 }
+        results = results.filter { $0.population > 0 }
       case .byArea(ascending: _):
-        results = results.filter { ($0.country.area ?? 0) > 0 }
+        results = results.filter { ($0.area ?? 0) > 0 }
       default:
         break
       }
-      return results
+      return results.map { CountryCell.ViewModel(country: $0, keywords: searchText) }
     }
     
     var currentSort = Sort.byName(ascending: true) {
@@ -38,33 +38,35 @@ extension CountriesListView {
         switch currentSort {
         case .byName(let ascending):
           if ascending {
-            allViewModels.sort { $0.country.name < $1.country.name }
+            allCountries.sort { $0.name < $1.name }
           } else {
-            allViewModels.sort { $0.country.name > $1.country.name }
+            allCountries.sort { $0.name > $1.name }
           }
         case .byPopulation(let ascending):
           if ascending {
-            allViewModels.sort { $0.country.population < $1.country.population }
+            allCountries.sort { $0.population < $1.population }
           } else {
-            allViewModels.sort { $0.country.population > $1.country.population }
+            allCountries.sort { $0.population > $1.population }
           }
         case .byArea(let ascending):
           if ascending {
-            allViewModels.sort { ($0.country.area ?? 0) < ($1.country.area ?? 0) }
+            allCountries.sort { ($0.area ?? 0) < ($1.area ?? 0) }
           } else {
-            allViewModels.sort { ($0.country.area ?? 0) > ($1.country.area ?? 0)}
+            allCountries.sort { ($0.area ?? 0) > ($1.area ?? 0)}
           }
         }
       }
     }
+    
+    var showIndex: Bool {
+      searchText.isEmpty
+    }
 
     func load() async {
       do {
-        let countries = try await local.fetchAll()
-        if countries.isEmpty {
+        allCountries = try local.fetchAll()
+        if allCountries.isEmpty {
           await refresh()
-        } else {
-          allViewModels = countries.map { CountryCell.ViewModel(country: $0, keywords: searchText) }
         }
       } catch {
         print(error)
@@ -73,9 +75,8 @@ extension CountriesListView {
     
     func refresh() async {
       do {
-        let countries = try await remote.fetchAll()
-        allViewModels = countries.map{ CountryCell.ViewModel(country: $0, keywords: searchText) }
-        try await local.save(countries: countries)
+        allCountries = try await remote.fetchAll()
+        try local.save(countries: allCountries)
       } catch {
         print(error)
       }

@@ -13,7 +13,7 @@ struct CountriesListView: View {
   var body: some View {
     NavigationView {
       List(viewModel.searchResult.indices, id: \.self) {
-        CountryCell(index: $0, viewModel: viewModel.searchResult[$0], showIndex: viewModel.searchText.isEmpty)
+        CountryCell(index: $0, viewModel: viewModel.searchResult[$0], showIndex: viewModel.showIndex)
       }
       .searchable(text: $viewModel.searchText)
       .disableAutocorrection(true)
@@ -29,9 +29,9 @@ struct CountriesListView: View {
     Menu {
       ForEach(CountriesListView.Sort.allCases) { sort in
         Button {
-          sort.update(current: &viewModel.currentSort)
+          sort.toggle(&viewModel.currentSort)
         } label: {
-          if let image = sort.icon(current: viewModel.currentSort) {
+          if let image = sort.icon(viewModel.currentSort) {
             Label(sort.label, systemImage: image)
           } else {
             Text(sort.label)

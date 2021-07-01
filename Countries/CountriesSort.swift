@@ -55,7 +55,7 @@ extension CountriesListView {
       }
     }
     
-    func update(current: inout Sort) {
+    func toggle(_ current: inout Sort) {
       guard case self = current else {
         switch self {
         case .byName(_):
@@ -81,7 +81,7 @@ extension CountriesListView {
       }
     }
     
-    func icon(current: Sort) -> String? {
+    func icon(_ current: Sort) -> String? {
       guard case self = current else { return nil }
       return current.isAscending ? "arrow.up.circle" : "arrow.down.circle"
     }
