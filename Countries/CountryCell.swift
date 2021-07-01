@@ -8,24 +8,23 @@
 import SwiftUI
 
 struct CountryCell: View {
-  let index: Int
   let viewModel: ViewModel
   let showIndex: Bool
+  let showRegion: Bool
   
   var body: some View {
     HStack {
       VStack(alignment: .leading) {
-        Text(viewModel.name)
-          .font(.title2.bold())
-        HStack(alignment: .lastTextBaseline) {
-          if let capital = viewModel.capital  {
-            Text(capital)
-              .font(.headline)
-          }
+        if showRegion {
           Text(viewModel.region)
             .font(.caption)
             .foregroundColor(.secondary)
-          
+        }
+        Text(viewModel.name)
+          .font(.title2.bold())
+        if let capital = viewModel.capital  {
+          Text(capital)
+            .font(.headline)
         }
         Text(viewModel.population)
           .font(.caption)
@@ -34,10 +33,10 @@ struct CountryCell: View {
             .font(.caption)
         }
       }
+      Spacer()
       if showIndex {
-        Spacer()
-        Text("\(index + 1)")
-          .font(.largeTitle)
+        Text("\(viewModel.index + 1)")
+          .font(.title.bold())
           .foregroundColor(.secondary)
       }
     }
@@ -53,25 +52,30 @@ extension CountryCell {
     var region: AttributedString
     var population: String
     var area: String?
+    var index: Int
     
-    init(country: Country, keywords: String) {
+    init(country: Country, keywords: String, index: Int) {
       self.country = country
+      self.index = index
       
       name = AttributedString(country.name_)
       if let range = name.range(of: keywords) {
         name[range].backgroundColor = .yellow
+        name[range].foregroundColor = .black
       }
       
       if !country.capital_.isEmpty {
         capital = AttributedString(country.capital_)
         if let range = capital?.range(of: keywords) {
           capital?[range].backgroundColor = .yellow
+          capital?[range].foregroundColor = .black
         }
       }
       
       region = AttributedString(country.region_)
       if let range = region.range(of: keywords) {
         region[range].backgroundColor = .yellow
+        region[range].foregroundColor = .black
       }
       
       population = "Population: \(country.population_.formatted)"

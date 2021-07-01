@@ -16,8 +16,8 @@ struct CountriesListView: View {
         if viewModel.isGrouped {
           ForEach(viewModel.regions, id: \.self) { section in
             Section(section) {
-              ForEach(viewModel.rowsForSection(section: section), id: \.country.name_) { cellVM in
-                CountryCell(index: 0, viewModel: cellVM, showIndex: viewModel.showIndex)
+              ForEach(viewModel.rowsForSection(section: section), id: \.country.name_) {
+                CountryCell(viewModel: $0, showIndex: viewModel.showIndex, showRegion: false)
                   .listRowSeparator(.hidden)
               }
             }
@@ -25,7 +25,7 @@ struct CountriesListView: View {
         } else {
           Section(viewModel.sectionName) {
             ForEach(viewModel.rows, id: \.country.name_) {
-              CountryCell(index: 0, viewModel: $0, showIndex: viewModel.showIndex)
+              CountryCell(viewModel: $0, showIndex: viewModel.showIndex, showRegion: true)
                 .listRowSeparator(.hidden)
             }
           }
@@ -36,32 +36,29 @@ struct CountriesListView: View {
       .refreshable { await viewModel.refresh() }
       .onAppear { async { await viewModel.load() } }
       .navigationTitle("Countries")
-      .navigationBarItems(trailing: sortMenu)
+      .navigationBarItems(leading: groupButton, trailing: sortMenu)
     }
   }
   
   private var sortMenu: some View {
     Menu {
       ForEach(Sort.allCases, content: sortMenuItem)
-      Button("Group by Region") {
-        viewModel.groupByRegion()
-      }
     } label: {
-      if viewModel.isGrouped {
-        HStack {
-          Text("Region")
-            .font(.caption)
-          Image(systemName: "rectangle.grid.1x2")
-        }
-      } else {
-        HStack {
-          Text(viewModel.currentSort.shortLabel)
-            .font(.caption)
-          Image(systemName: viewModel.currentSort.isAscending ? "arrow.up.circle" : "arrow.down.circle")
-        }
+      HStack {
+        Text(viewModel.currentSort.shortLabel)
+          .font(.caption)
+        Image(systemName: viewModel.currentSort.isAscending ? "arrow.up.circle" : "arrow.down.circle")
       }
     } primaryAction: {
       viewModel.currentSort.toggleAscending()
+    }
+  }
+  
+  private var groupButton: some View {
+    Button {
+      viewModel.isGrouped.toggle()
+    } label: {
+      Image(systemName: viewModel.isGrouped ? "rectangle.grid.1x2" : "list.dash")
     }
   }
   
