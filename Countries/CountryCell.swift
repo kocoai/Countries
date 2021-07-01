@@ -10,17 +10,14 @@ import SwiftUI
 struct CountryCell: View {
   let viewModel: ViewModel
   let showIndex: Bool
-  let showRegion: Bool
   
   var body: some View {
     NavigationLink(destination: MapView(latitude: viewModel.country.lat_, longitude: viewModel.country.lng_).edgesIgnoringSafeArea(.all)) {
       HStack {
         VStack(alignment: .leading) {
-          if showRegion {
-            Text(viewModel.region)
-              .font(.caption)
-              .foregroundColor(.secondary)
-          }
+          Text(viewModel.subregion)
+            .font(.caption)
+            .foregroundColor(.secondary)
           Text(viewModel.name).font(.title2.bold())
           if let capital = viewModel.capital  {
             Text(capital).font(.headline)
@@ -47,7 +44,7 @@ extension CountryCell {
     let country: Country
     var name: AttributedString
     var capital: AttributedString?
-    var region: AttributedString
+    var subregion: AttributedString
     var population: String
     var area: String?
     var index: Int
@@ -59,7 +56,7 @@ extension CountryCell {
       if !country.capital_.isEmpty {
         capital = country.capital_.highlight(keywords)
       }
-      region = country.region_.highlight(keywords)
+      subregion = country.subregion_.highlight(keywords)
       population = "Population: \(country.population_.formatted)"
       if country.area_ > 0 {
         area = "Area: \(country.area_.formatted) km2"

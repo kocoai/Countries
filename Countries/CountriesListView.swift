@@ -14,21 +14,9 @@ struct CountriesListView: View {
     NavigationView {
       List {
         if viewModel.isGrouped {
-          ForEach(viewModel.regions, id: \.self) { section in
-            Section(section) {
-              ForEach(viewModel.rowsForSection(section: section), id: \.country.name_) {
-                CountryCell(viewModel: $0, showIndex: viewModel.showIndex, showRegion: false)
-                  .listRowSeparator(.hidden)
-              }
-            }
-          }
+          groupedList
         } else {
-          Section(viewModel.sectionName) {
-            ForEach(viewModel.rows, id: \.country.name_) {
-              CountryCell(viewModel: $0, showIndex: viewModel.showIndex, showRegion: true)
-                .listRowSeparator(.hidden)
-            }
-          }
+          plainList
         }
       }
       .searchable(text: $viewModel.searchText)
@@ -41,6 +29,26 @@ struct CountriesListView: View {
       }
       .navigationTitle("Countries")
       .navigationBarItems(leading: groupButton, trailing: sortMenu)
+    }
+  }
+  
+  private var groupedList: some View {
+    ForEach(viewModel.regions, id: \.self) { section in
+      Section(section) {
+        ForEach(viewModel.rowsForSection(section: section), id: \.country.name_) {
+          CountryCell(viewModel: $0, showIndex: viewModel.showIndex)
+            .listRowSeparator(.hidden)
+        }
+      }
+    }
+  }
+  
+  private var plainList: some View {
+    Section(viewModel.sectionName) {
+      ForEach(viewModel.rows, id: \.country.name_) {
+        CountryCell(viewModel: $0, showIndex: viewModel.showIndex)
+          .listRowSeparator(.hidden)
+      }
     }
   }
   
