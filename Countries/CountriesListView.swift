@@ -12,15 +12,21 @@ struct CountriesListView: View {
   
   var body: some View {
     NavigationView {
-      List(viewModel.searchResult.indices, id: \.self) {
-        CountryCell(index: $0, viewModel: viewModel.searchResult[$0], showIndex: viewModel.showIndex)
+      List {
+        ForEach(viewModel.viewModels.indices, id: \.self) { section in
+          Section(header: Text(viewModel.sectionName(section: section))) {
+            ForEach(viewModel.viewModels[section].indices, id: \.self) { row in
+              CountryCell(index: row, viewModel: viewModel.viewModels[section][row], showIndex: viewModel.showIndex)
+            }
+          }
+        }
       }
       .searchable(text: $viewModel.searchText)
       .disableAutocorrection(true)
       .refreshable { await viewModel.refresh() }
       .listStyle(.insetGrouped)
       .onAppear { async { await viewModel.load() } }
-      .navigationTitle("Countries (\(viewModel.searchResult.count))")
+      .navigationTitle("Countries (\(viewModel.viewModels.count))")
       .navigationBarItems(trailing: sortMenu)
     }
   }

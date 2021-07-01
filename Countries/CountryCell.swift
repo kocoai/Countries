@@ -41,7 +41,7 @@ struct CountryCell: View {
           .foregroundColor(.secondary)
       }
     }
-    .id(viewModel.country.name)
+    .id(viewModel.country.name_)
   }
 }
 
@@ -49,22 +49,22 @@ extension CountryCell {
   final class ViewModel:ObservableObject {
     let country: Country
     var name: AttributedString {
-      var atr = AttributedString(country.name)
+      var atr = AttributedString(country.name_)
       if let range = atr.range(of: keywords) {
         atr[range].backgroundColor = .yellow
       }
       return atr
     }
     var capital: AttributedString? {
-      guard country.capital.isEmpty == false else { return nil }
-      var atr = AttributedString(country.capital)
+      guard country.capital_.isEmpty == false else { return nil }
+      var atr = AttributedString(country.capital_)
       if let range = atr.range(of: keywords) {
         atr[range].backgroundColor = .yellow
       }
       return atr
     }
     var region: AttributedString {
-      var atr = AttributedString(country.region)
+      var atr = AttributedString(country.region_)
       if let range = atr.range(of: keywords) {
         atr[range].backgroundColor = .yellow
       }
@@ -77,9 +77,9 @@ extension CountryCell {
     init(country: Country, keywords: String) {
       self.country = country
       self.keywords = keywords
-      population = "Population: \(country.population.formatted)"
-      if let a = country.area, a > 0 {
-        area = "Area: \(a.formatted) km2"
+      population = "Population: \(country.population_.formatted)"
+      if country.area_ > 0 {
+        area = "Area: \(country.area_.formatted) km2"
       }
     }
   }

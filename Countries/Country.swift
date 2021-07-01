@@ -9,14 +9,20 @@ import Foundation
 import RealmSwift
 
 protocol Country {
-  var name: String { get }
-  var capital: String { get }
-  var population: Int { get }
-  var area: Float? { get }
-  var region: String { get }
+  var name_: String { get }
+  var capital_: String { get }
+  var population_: Int { get }
+  var area_: Float { get }
+  var region_: String { get }
 }
 
 struct RealCountry: Decodable, Country {
+  var name_: String { name }
+  var capital_: String { capital }
+  var population_: Int { population }
+  var area_: Float { area ?? 0 }
+  var region_: String { region }
+  
   var name: String
   var capital: String
   var population: Int
@@ -25,27 +31,23 @@ struct RealCountry: Decodable, Country {
 }
 
 final class CountryObject: Object, Country {
-  @objc dynamic var name = ""
-  @objc dynamic var capital = ""
-  @objc dynamic var population = 0
-  @objc dynamic var region = ""
+  @objc dynamic var name_ = ""
+  @objc dynamic var capital_ = ""
+  @objc dynamic var population_ = 0
+  @objc dynamic var region_ = ""
   @objc dynamic var area_: Float = 0
-  var area: Float? {
-    get { area_ }
-    set { area_ = newValue ?? 0 }
-  }
   
   override class func primaryKey() -> String? {
-    return "name"
+    return "name_"
   }
   
   convenience init(country: Country) {
     self.init()
-    self.name = country.name
-    self.area = country.area
-    self.population = country.population
-    self.capital = country.capital
-    self.region = country.region
+    self.name_ = country.name_
+    self.area_ = country.area_
+    self.population_ = country.population_
+    self.capital_ = country.capital_
+    self.region_ = country.region_
   }
 }
 
