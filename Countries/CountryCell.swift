@@ -20,17 +20,13 @@ struct CountryCell: View {
             .font(.caption)
             .foregroundColor(.secondary)
         }
-        Text(viewModel.name)
-          .font(.title2.bold())
+        Text(viewModel.name).font(.title2.bold())
         if let capital = viewModel.capital  {
-          Text(capital)
-            .font(.headline)
+          Text(capital).font(.headline)
         }
-        Text(viewModel.population)
-          .font(.caption)
+        Text(viewModel.population).font(.caption)
         if let area = viewModel.area {
-          Text(area)
-            .font(.caption)
+          Text(area).font(.caption)
         }
       }
       Spacer()
@@ -62,7 +58,6 @@ extension CountryCell {
         capital = country.capital_.highlight(keywords)
       }
       region = country.region_.highlight(keywords)
-      
       population = "Population: \(country.population_.formatted)"
       if country.area_ > 0 {
         area = "Area: \(country.area_.formatted) km2"
