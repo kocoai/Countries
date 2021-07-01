@@ -13,30 +13,32 @@ struct CountryCell: View {
   let showRegion: Bool
   
   var body: some View {
-    HStack {
-      VStack(alignment: .leading) {
-        if showRegion {
-          Text(viewModel.region)
-            .font(.caption)
+    NavigationLink(destination: MapView(latitude: viewModel.country.lat_, longitude: viewModel.country.lng_).edgesIgnoringSafeArea(.all)) {
+      HStack {
+        VStack(alignment: .leading) {
+          if showRegion {
+            Text(viewModel.region)
+              .font(.caption)
+              .foregroundColor(.secondary)
+          }
+          Text(viewModel.name).font(.title2.bold())
+          if let capital = viewModel.capital  {
+            Text(capital).font(.headline)
+          }
+          Text(viewModel.population).font(.caption)
+          if let area = viewModel.area {
+            Text(area).font(.caption)
+          }
+        }
+        Spacer()
+        if showIndex {
+          Text("\(viewModel.index + 1)")
+            .font(.title.bold())
             .foregroundColor(.secondary)
         }
-        Text(viewModel.name).font(.title2.bold())
-        if let capital = viewModel.capital  {
-          Text(capital).font(.headline)
-        }
-        Text(viewModel.population).font(.caption)
-        if let area = viewModel.area {
-          Text(area).font(.caption)
-        }
       }
-      Spacer()
-      if showIndex {
-        Text("\(viewModel.index + 1)")
-          .font(.title.bold())
-          .foregroundColor(.secondary)
-      }
+      .id(viewModel.country.name_)
     }
-    .id(viewModel.country.name_)
   }
 }
 

@@ -25,7 +25,7 @@ extension CountriesListView {
         }
       }
     }
-    
+    var isLoaded = false
     var rows: [CountryCell.ViewModel] {
       guard searchText.isEmpty else {
         let countries = try? local.fetch(keywords: searchText, sort: currentSort)
@@ -46,6 +46,7 @@ extension CountriesListView {
       if all.isEmpty {
         await refresh()
       }
+      isLoaded = true
     }
     
     func refresh() async {

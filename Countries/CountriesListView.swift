@@ -34,7 +34,11 @@ struct CountriesListView: View {
       .searchable(text: $viewModel.searchText)
       .disableAutocorrection(true)
       .refreshable { await viewModel.refresh() }
-      .onAppear { async { await viewModel.load() } }
+      .onAppear {
+        if !viewModel.isLoaded {
+          async { await viewModel.load() }
+        }
+      }
       .navigationTitle("Countries")
       .navigationBarItems(leading: groupButton, trailing: sortMenu)
     }
