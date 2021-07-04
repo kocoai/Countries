@@ -14,7 +14,7 @@ struct CountryCell: View {
   var body: some View {
     NavigationLink(destination: MapView(latitude: viewModel.country.lat_, longitude: viewModel.country.lng_).edgesIgnoringSafeArea(.all)) {
       HStack {
-        VStack(alignment: .leading) {
+        VStack(alignment: .leading) { 
           Text(viewModel.subregion)
             .font(.caption)
             .foregroundColor(.secondary)
@@ -29,9 +29,14 @@ struct CountryCell: View {
         }
         Spacer()
         if showIndex {
-          Text("\(viewModel.index + 1)")
-            .font(.title.bold())
-            .foregroundColor(.secondary)
+          ZStack {
+            Circle()
+              .foregroundColor(Color(UIColor.quaternarySystemFill))
+              .frame(width: 60)
+            Text("\(viewModel.index + 1)")
+              .font(.title.bold())
+              .foregroundColor(.secondary)
+          }
         }
       }
       .id(viewModel.country.name_)

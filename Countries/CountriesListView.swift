@@ -22,13 +22,13 @@ struct CountriesListView: View {
       .searchable(text: $viewModel.searchText)
       .disableAutocorrection(true)
       .refreshable { await viewModel.refresh() }
+      .navigationTitle("Countries")
+      .navigationBarItems(leading: groupButton, trailing: sortMenu)
       .onAppear {
         if !viewModel.isLoaded {
           async { await viewModel.load() }
         }
       }
-      .navigationTitle("Countries")
-      .navigationBarItems(leading: groupButton, trailing: sortMenu)
     }
   }
   

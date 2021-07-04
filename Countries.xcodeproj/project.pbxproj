@@ -113,9 +113,9 @@
 				9D526049268D10D000429270 /* CountryCell.swift */,
 				9D7D05A5268CA82C000C45ED /* Sort.swift */,
 				9D7D05A7268CB4B1000C45ED /* Repository.swift */,
+				9DCD64BA268E435600A2CD1D /* MapView.swift */,
 				9DF6C325268A15A400E107E5 /* Assets.xcassets */,
 				9DF6C327268A15A400E107E5 /* Preview Content */,
-				9DCD64BA268E435600A2CD1D /* MapView.swift */,
 			);
 			path = Countries;
 			sourceTree = "<group>";

@@ -17,9 +17,10 @@ protocol Country {
   var lat_: Float { get }
   var lng_: Float { get }
   var subregion_: String { get }
+  var alpha2Code_: String { get }
 }
 
-struct RealCountry: Decodable, Country {
+struct RestCountry: Decodable, Country {
   var name: String
   var capital: String
   var population: Int
@@ -27,6 +28,7 @@ struct RealCountry: Decodable, Country {
   var region: String
   var latlng: [Float]
   var subregion: String
+  var alpha2Code: String
   
   var name_: String { name }
   var capital_: String { capital }
@@ -36,6 +38,7 @@ struct RealCountry: Decodable, Country {
   var lat_: Float { latlng.first ?? 0 }
   var lng_: Float { latlng.last ?? 0 }
   var subregion_: String { subregion }
+  var alpha2Code_: String { alpha2Code }
 }
 
 final class CountryObject: Object, Country {
@@ -47,6 +50,7 @@ final class CountryObject: Object, Country {
   @objc dynamic var lat_: Float = 0
   @objc dynamic var lng_: Float = 0
   @objc dynamic var subregion_ = ""
+  @objc dynamic var alpha2Code_ = ""
   
   override class func primaryKey() -> String? {
     return "name_"
@@ -62,6 +66,7 @@ final class CountryObject: Object, Country {
     self.subregion_ = country.subregion_
     self.lat_ = country.lat_
     self.lng_ = country.lng_
+    self.alpha2Code_ = country.alpha2Code_
   }
 }
 

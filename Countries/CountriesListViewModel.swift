@@ -12,6 +12,7 @@ extension CountriesListView {
     @Published var searchText = ""
     @Published var isGrouped: Bool = false
     @Published private var all = [Country]()
+    
     @Published var currentSort = Sort.byName(ascending: true) {
       didSet {
         guard !isGrouped else { return }
@@ -25,7 +26,9 @@ extension CountriesListView {
         }
       }
     }
+    
     var isLoaded = false
+    
     var rows: [CountryCell.ViewModel] {
       guard searchText.isEmpty else {
         let countries = try? local.fetch(keywords: searchText, sort: currentSort)
@@ -38,7 +41,6 @@ extension CountriesListView {
     private let remote = RemoteRepository()
     private let local = LocalRepository()
     var sectionName: String { "Count: \(rows.count)" }
-    
     var showIndex: Bool { searchText.isEmpty }
 
     func load() async {
@@ -59,8 +61,7 @@ extension CountriesListView {
     }
     
     func rowsForSection(section: String) -> [CountryCell.ViewModel] {
-      let viewModels = try? local.fetch(region: section, keywords: searchText, sort: currentSort).enumerated().map { CountryCell.ViewModel(country: $1, keywords: searchText, index: $0) }
-      return viewModels ?? []
+      local.fetch(region: section, keywords: searchText, sort: currentSort).enumerated().map { CountryCell.ViewModel(country: $1, keywords: searchText, index: $0) }
     }
   }
 }
