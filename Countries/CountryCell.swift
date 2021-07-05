@@ -8,13 +8,13 @@
 import SwiftUI
 
 struct CountryCell: View {
-  @ObservedObject var viewModel: ViewModel
+  @ObservedObject var viewModel: CountryCellViewModel
   let showIndex: Bool
   
   var body: some View {
     NavigationLink(destination: MapView(latitude: viewModel.country.lat_, longitude: viewModel.country.lng_).edgesIgnoringSafeArea(.all)) {
       HStack {
-        VStack(alignment: .leading) { 
+        VStack(alignment: .leading) {
           Text(viewModel.subregion)
             .font(.caption)
             .foregroundColor(.secondary)
@@ -65,37 +65,35 @@ struct CountryCell: View {
   }
 }
 
-extension CountryCell {
-  final class ViewModel: ObservableObject {
-    var country: Country
-    var name: AttributedString
-    var capital: AttributedString?
-    var subregion: AttributedString
-    var population: String
-    var area: String?
-    var index: Int
-    @Published var isFavorite: Bool
-    
-    init(country: Country, keywords: String, index: Int) {
-      self.country = country
-      self.index = index
-      name = country.name_.highlight(keywords)
-      if !country.capital_.isEmpty {
-        capital = country.capital_.highlight(keywords)
-      }
-      subregion = country.subregion_.highlight(keywords)
-      population = "Population: \(country.population_.formatted)"
-      if country.area_ > 0 {
-        area = "Area: \(country.area_.formatted) km2"
-      }
-      isFavorite = country.isFavorite_
+final class CountryCellViewModel: ObservableObject {
+  var country: Country
+  var name: AttributedString
+  var capital: AttributedString?
+  var subregion: AttributedString
+  var population: String
+  var area: String?
+  var index: Int
+  @Published var isFavorite: Bool
+  
+  init(country: Country, keywords: String, index: Int) {
+    self.country = country
+    self.index = index
+    name = country.name_.highlight(keywords)
+    if !country.capital_.isEmpty {
+      capital = country.capital_.highlight(keywords)
     }
-    
-    func toggleFavorite() {
-      isFavorite.toggle()
-      let localRepository = LocalRepository()
-      localRepository.toggleFavorite(country: country)
+    subregion = country.subregion_.highlight(keywords)
+    population = "Population: \(country.population_.formatted)"
+    if country.area_ > 0 {
+      area = "Area: \(country.area_.formatted) km2"
     }
+    isFavorite = country.isFavorite_
+  }
+  
+  func toggleFavorite() {
+    isFavorite.toggle()
+    let localRepository = LocalRepository()
+    localRepository.toggleFavorite(country: country)
   }
 }
 
