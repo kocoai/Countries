@@ -12,7 +12,7 @@ struct CountryCell: View {
   let showIndex: Bool
   
   var body: some View {
-    NavigationLink(destination: MapView(latitude: viewModel.country.lat_, longitude: viewModel.country.lng_).edgesIgnoringSafeArea(.all)) {
+    NavigationLink(destination: MapView(latitude: viewModel.lat, longitude: viewModel.lng).edgesIgnoringSafeArea(.all)) {
       HStack {
         VStack(alignment: .leading) {
           Text(viewModel.subregion)
@@ -44,7 +44,7 @@ struct CountryCell: View {
           }
         }
       }
-      .id(viewModel.country.name_)
+      .id(viewModel.primaryKey)
     }
     .swipeActions(edge: .leading) {
       if viewModel.isFavorite {
@@ -63,66 +63,4 @@ struct CountryCell: View {
       }
     }
   }
-}
-
-final class CountryCellViewModel: ObservableObject {
-  var country: Country
-  var name: AttributedString
-  var capital: AttributedString?
-  var subregion: AttributedString
-  var population: String
-  var area: String?
-  var index: Int
-  @Published var isFavorite: Bool
-  
-  init(country: Country, keywords: String, index: Int) {
-    self.country = country
-    self.index = index
-    name = country.name_.highlight(keywords)
-    if !country.capital_.isEmpty {
-      capital = country.capital_.highlight(keywords)
-    }
-    subregion = country.subregion_.highlight(keywords)
-    population = "Population: \(country.population_.formatted)"
-    if country.area_ > 0 {
-      area = "Area: \(country.area_.formatted) km2"
-    }
-    isFavorite = country.isFavorite_
-  }
-  
-  func toggleFavorite() {
-    isFavorite.toggle()
-    let localRepository = LocalRepository()
-    localRepository.toggleFavorite(country: country)
-  }
-}
-
-extension String {
-  func highlight(_ keywords: String) -> AttributedString {
-    var atr = AttributedString(self)
-    if let range = atr.range(of: keywords) {
-      atr[range].backgroundColor = .yellow
-      atr[range].foregroundColor = .black
-    }
-    return atr
-  }
-}
-
-extension Formatter {
-  static let withSeparator: NumberFormatter = {
-    let formatter = NumberFormatter()
-    formatter.locale = Locale.current
-    formatter.numberStyle = .decimal
-    formatter.usesGroupingSeparator = true
-    formatter.groupingSeparator = " "
-    formatter.groupingSize = 3
-    formatter.minimumFractionDigits = 0
-    formatter.maximumFractionDigits = 2
-    formatter.roundingMode = .halfUp
-    return formatter
-  }()
-}
-
-extension Numeric {
-  var formatted: String { Formatter.withSeparator.string(for: self) ?? "" }
 }

@@ -22,7 +22,6 @@ protocol Country {
 }
 
 struct RestCountry: Decodable, Country {
-  
   var name: String
   var capital: String
   var population: Int

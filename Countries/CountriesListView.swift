@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct CountriesListView: View {
-  @StateObject private var viewModel = ViewModel()
+  @StateObject private var viewModel = CountriesListViewModel()
   
   var body: some View {
     NavigationView {
@@ -35,7 +35,7 @@ struct CountriesListView: View {
   private var groupedList: some View {
     ForEach(viewModel.regions, id: \.self) { section in
       Section(viewModel.sectionName(for: section)) {
-        ForEach(viewModel.rows(section: section), id: \.country.name_) {
+        ForEach(viewModel.rows(section: section), id: \.primaryKey) {
           CountryCell(viewModel: $0, showIndex: viewModel.showIndex)
             .listRowSeparator(.hidden)
         }
@@ -45,7 +45,7 @@ struct CountriesListView: View {
   
   private var plainList: some View {
     Section(viewModel.sectionName()) {
-      ForEach(viewModel.rows(), id: \.country.name_) {
+      ForEach(viewModel.rows(), id: \.primaryKey) {
         CountryCell(viewModel: $0, showIndex: viewModel.showIndex)
           .listRowSeparator(.hidden)
       }

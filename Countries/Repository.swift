@@ -69,11 +69,11 @@ struct LocalRepository {
     }
   }
   
-  func toggleFavorite(country: Country) {
+  func toggleFavorite(primaryKey: String) {
     do {
       let realm = try Realm()
       try realm.write {
-        if let object = realm.object(ofType: CountryObject.self, forPrimaryKey: country.name_) {
+        if let object = realm.object(ofType: CountryObject.self, forPrimaryKey: primaryKey) {
           object.isFavorite_.toggle()
           realm.add(object, update: .all)
         }
