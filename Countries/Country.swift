@@ -18,9 +18,11 @@ protocol Country {
   var lng_: Float { get }
   var subregion_: String { get }
   var alpha2Code_: String { get }
+  var isFavorite_: Bool { get }
 }
 
 struct RestCountry: Decodable, Country {
+  
   var name: String
   var capital: String
   var population: Int
@@ -39,6 +41,7 @@ struct RestCountry: Decodable, Country {
   var lng_: Float { latlng.last ?? 0 }
   var subregion_: String { subregion }
   var alpha2Code_: String { alpha2Code }
+  var isFavorite_: Bool { false }
 }
 
 final class CountryObject: Object, Country {
@@ -51,12 +54,13 @@ final class CountryObject: Object, Country {
   @objc dynamic var lng_: Float = 0
   @objc dynamic var subregion_ = ""
   @objc dynamic var alpha2Code_ = ""
+  @objc dynamic var isFavorite_ = false
   
   override class func primaryKey() -> String? {
     return "name_"
   }
   
-  convenience init(country: Country) {
+  convenience init(_ country: Country) {
     self.init()
     self.name_ = country.name_
     self.area_ = country.area_

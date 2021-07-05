@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct CountryCell: View {
-  let viewModel: ViewModel
+  @ObservedObject var viewModel: ViewModel
   let showIndex: Bool
   
   var body: some View {
@@ -18,7 +18,12 @@ struct CountryCell: View {
           Text(viewModel.subregion)
             .font(.caption)
             .foregroundColor(.secondary)
-          Text(viewModel.name).font(.title2.bold())
+          HStack {
+            Text(viewModel.name).font(.title2.bold())
+            if viewModel.isFavorite {
+              Image(systemName: "star.fill")
+            }
+          }
           if let capital = viewModel.capital  {
             Text(capital).font(.headline)
           }
@@ -41,18 +46,35 @@ struct CountryCell: View {
       }
       .id(viewModel.country.name_)
     }
+    .swipeActions(edge: .leading) {
+      if viewModel.isFavorite {
+        Button(role: .destructive) {
+          viewModel.toggleFavorite()
+        } label: {
+          Label("Unfavorite", systemImage: "star.slash.fill")
+        }
+      } else {
+        Button() {
+          viewModel.toggleFavorite()
+        } label: {
+          Label( "Favorite", systemImage: "star.fill")
+        }
+        .tint(.blue)
+      }
+    }
   }
 }
 
 extension CountryCell {
-  final class ViewModel:ObservableObject {
-    let country: Country
+  final class ViewModel: ObservableObject {
+    var country: Country
     var name: AttributedString
     var capital: AttributedString?
     var subregion: AttributedString
     var population: String
     var area: String?
     var index: Int
+    @Published var isFavorite: Bool
     
     init(country: Country, keywords: String, index: Int) {
       self.country = country
@@ -66,6 +88,13 @@ extension CountryCell {
       if country.area_ > 0 {
         area = "Area: \(country.area_.formatted) km2"
       }
+      isFavorite = country.isFavorite_
+    }
+    
+    func toggleFavorite() {
+      isFavorite.toggle()
+      let localRepository = LocalRepository()
+      localRepository.toggleFavorite(country: country)
     }
   }
 }

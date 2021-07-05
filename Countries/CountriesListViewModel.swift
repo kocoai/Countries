@@ -11,6 +11,7 @@ extension CountriesListView {
   final class ViewModel: ObservableObject {
     @Published var searchText = ""
     @Published var isGrouped: Bool = false
+    @Published var showFavoriteOnly: Bool = false
     @Published private var all = [Country]()
     
     @Published var currentSort = Sort.byName(ascending: true) {
@@ -18,11 +19,11 @@ extension CountriesListView {
         guard !isGrouped else { return }
         switch currentSort {
         case .byName(let ascending):
-          all = local.fetchAllSortByName(ascending)
+          all = local.fetchAllSortByName(ascending: ascending, showFavoriteOnly: showFavoriteOnly)
         case .byPopulation(let ascending):
-          all = local.fetchAllSortByPopulation(ascending)
+          all = local.fetchAllSortByPopulation(ascending: ascending, showFavoriteOnly: showFavoriteOnly)
         case .byArea(let ascending):
-          all = local.fetchAllSortByArea(ascending)
+          all = local.fetchAllSortByArea(ascending: ascending, showFavoriteOnly: showFavoriteOnly)
         }
       }
     }
@@ -31,8 +32,8 @@ extension CountriesListView {
     
     var rows: [CountryCell.ViewModel] {
       guard searchText.isEmpty else {
-        let countries = try? local.fetch(keywords: searchText, sort: currentSort)
-        return countries?.enumerated().map { CountryCell.ViewModel(country: $1, keywords: searchText, index: $0) } ?? all.enumerated().map { CountryCell.ViewModel(country: $1, keywords: searchText, index: $0) }
+        let countries = local.fetch(keywords: searchText, sort: currentSort)
+        return countries.enumerated().map { CountryCell.ViewModel(country: $1, keywords: searchText, index: $0) }
       }
       return all.enumerated().map { CountryCell.ViewModel(country: $1, keywords: searchText, index: $0) }
     }
@@ -44,7 +45,7 @@ extension CountriesListView {
     var showIndex: Bool { searchText.isEmpty }
 
     func load() async {
-      all = local.fetchAllSortByName()
+      all = local.fetchAllSortByName(showFavoriteOnly: showFavoriteOnly)
       if all.isEmpty {
         await refresh()
       }
@@ -54,14 +55,14 @@ extension CountriesListView {
     func refresh() async {
       do {
         all = try await remote.fetchAll()
-        try local.save(countries: all)
+        local.save(countries: all)
       } catch {
         print(error)
       }
     }
     
     func rowsForSection(section: String) -> [CountryCell.ViewModel] {
-      local.fetch(region: section, keywords: searchText, sort: currentSort).enumerated().map { CountryCell.ViewModel(country: $1, keywords: searchText, index: $0) }
+      local.fetch(region: section, keywords: searchText, sort: currentSort, showFavoriteOnly: showFavoriteOnly).enumerated().map { CountryCell.ViewModel(country: $1, keywords: searchText, index: $0) }
     }
   }
 }

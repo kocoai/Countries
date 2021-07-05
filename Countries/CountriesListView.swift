@@ -23,7 +23,7 @@ struct CountriesListView: View {
       .disableAutocorrection(true)
       .refreshable { await viewModel.refresh() }
       .navigationTitle("Countries")
-      .navigationBarItems(leading: groupButton, trailing: sortMenu)
+      .navigationBarItems(leading: leadingButtons, trailing: sortMenu)
       .onAppear {
         if !viewModel.isLoaded {
           async { await viewModel.load() }
@@ -66,11 +66,19 @@ struct CountriesListView: View {
     }
   }
   
-  private var groupButton: some View {
-    Button {
-      viewModel.isGrouped.toggle()
-    } label: {
-      Image(systemName: viewModel.isGrouped ? "rectangle.grid.1x2" : "list.dash")
+  private var leadingButtons: some View {
+    HStack {
+      Button {
+        viewModel.isGrouped.toggle()
+      } label: {
+        Image(systemName: viewModel.isGrouped ? "rectangle.grid.1x2" : "list.dash")
+      }
+      
+      Button {
+        viewModel.showFavoriteOnly.toggle()
+      } label: {
+        Image(systemName: viewModel.showFavoriteOnly ? "star.fill" : "star.slash.fill" )
+      }
     }
   }
   
