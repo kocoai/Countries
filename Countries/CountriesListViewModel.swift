@@ -19,11 +19,8 @@ final class CountriesListViewModel: ObservableObject {
   private let remote = RemoteRepository()
   private let local = LocalRepository()
   
-  func rows(section: String = "") -> [CountryCellViewModel] {
-    local
-      .fetch(region: section, keywords: searchText, sort: currentSort, showFavoriteOnly: showFavoriteOnly)
-      .enumerated()
-      .map { CountryCellViewModel(country: $1, keywords: searchText, index: $0) }
+  func rows(section: String = "") -> [Country] {
+    local.fetch(region: section, keywords: searchText, sort: currentSort, showFavoriteOnly: showFavoriteOnly)
   }
   
   func sectionName(for section: String = "") -> String {

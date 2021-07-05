@@ -23,7 +23,7 @@ final class CountryCellViewModel: ObservableObject {
     primaryKey = country.name_
     self.index = index
     name = country.name_.highlight(keywords)
-    capital = !country.capital_.isEmpty ? nil : country.capital_.highlight(keywords)
+    capital = country.capital_.isEmpty ? nil : country.capital_.highlight(keywords)
     subregion = country.subregion_.highlight(keywords)
     population = "Population: \(country.population_.formatted)"
     area = country.area_ > 0 ? "Area: \(country.area_.formatted) km2" : nil
@@ -42,7 +42,7 @@ final class CountryCellViewModel: ObservableObject {
 extension String {
   func highlight(_ keywords: String) -> AttributedString {
     var atr = AttributedString(self)
-    if let range = atr.range(of: keywords) {
+    if let range = atr.range(of: keywords, options: [.caseInsensitive, .diacriticInsensitive]) {
       atr[range].backgroundColor = .yellow
       atr[range].foregroundColor = .black
     }

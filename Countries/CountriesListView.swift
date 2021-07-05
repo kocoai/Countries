@@ -35,8 +35,8 @@ struct CountriesListView: View {
   private var groupedList: some View {
     ForEach(viewModel.regions, id: \.self) { section in
       Section(viewModel.sectionName(for: section)) {
-        ForEach(viewModel.rows(section: section), id: \.primaryKey) {
-          CountryCell(viewModel: $0, showIndex: viewModel.showIndex)
+        ForEach(viewModel.rows(section: section).indexed(), id: \.1.name_) {
+          CountryCell(viewModel: CountryCellViewModel(country: $1, keywords: viewModel.searchText, index: $0))
             .listRowSeparator(.hidden)
         }
       }
@@ -45,8 +45,8 @@ struct CountriesListView: View {
   
   private var plainList: some View {
     Section(viewModel.sectionName()) {
-      ForEach(viewModel.rows(), id: \.primaryKey) {
-        CountryCell(viewModel: $0, showIndex: viewModel.showIndex)
+      ForEach(viewModel.rows().indexed(), id: \.1.name_) {
+        CountryCell(viewModel: CountryCellViewModel(country: $1, keywords: viewModel.searchText, index: $0))
           .listRowSeparator(.hidden)
       }
     }

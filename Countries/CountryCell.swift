@@ -9,7 +9,6 @@ import SwiftUI
 
 struct CountryCell: View {
   @ObservedObject var viewModel: CountryCellViewModel
-  let showIndex: Bool
   
   var body: some View {
     NavigationLink(destination: MapView(latitude: viewModel.lat, longitude: viewModel.lng).edgesIgnoringSafeArea(.all)) {
@@ -33,15 +32,13 @@ struct CountryCell: View {
           }
         }
         Spacer()
-        if showIndex {
-          ZStack {
-            Circle()
-              .foregroundColor(Color(UIColor.quaternarySystemFill))
-              .frame(width: 60)
-            Text("\(viewModel.index + 1)")
-              .font(.title.bold())
-              .foregroundColor(.secondary)
-          }
+        ZStack {
+          Circle()
+            .foregroundColor(Color(UIColor.quaternarySystemFill))
+            .frame(width: 60)
+          Text("\(viewModel.index + 1)")
+            .font(.title.bold())
+            .foregroundColor(.secondary)
         }
       }
       .id(viewModel.primaryKey)

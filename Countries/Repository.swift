@@ -18,18 +18,7 @@ struct RemoteRepository {
 }
 
 struct LocalRepository {
-#if DEBUG
-  static var count = 0
-#endif
-  
   func fetch(region: String = "", keywords: String = "", sort: Sort, showFavoriteOnly: Bool = false) -> [Country] {
-#if DEBUG
-    if region.isEmpty {
-      LocalRepository.count += 1
-      print("fetch \(LocalRepository.count)")
-    }
-#endif
-    
     do {
       var result = try Realm().objects(CountryObject.self)
       
@@ -46,8 +35,9 @@ struct LocalRepository {
       }
       
       if !keywords.isEmpty {
-        result = result.filter("name_ contains %@ OR capital_ contains %@ OR region_ contains %@", keywords, keywords, keywords)
+        result = result.filter("name_ CONTAINS[cd] %@ OR capital_ CONTAINS[cd] %@ OR subregion_ CONTAINS[cd] %@", keywords, keywords, keywords)
       }
+      
       return Array(result.sorted(byKeyPath: sort.keyPath, ascending: sort.isAscending))
       
     } catch {

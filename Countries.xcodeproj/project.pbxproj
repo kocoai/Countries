@@ -13,6 +13,7 @@
 		9D7D05AB268CB77B000C45ED /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 9D7D05AA268CB77B000C45ED /* RealmSwift */; };
 		9DCD64BB268E435600A2CD1D /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DCD64BA268E435600A2CD1D /* MapView.swift */; };
 		9DE4EB6726935C4D0036EFDB /* CountryCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DE4EB6626935C4D0036EFDB /* CountryCellViewModel.swift */; };
+		9DE4EB6926935E710036EFDB /* RandomAccessCollection+Index.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DE4EB6826935E710036EFDB /* RandomAccessCollection+Index.swift */; };
 		9DF6C322268A15A200E107E5 /* CountriesApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DF6C321268A15A200E107E5 /* CountriesApp.swift */; };
 		9DF6C324268A15A200E107E5 /* CountriesListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DF6C323268A15A200E107E5 /* CountriesListView.swift */; };
 		9DF6C326268A15A400E107E5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9DF6C325268A15A400E107E5 /* Assets.xcassets */; };
@@ -46,6 +47,7 @@
 		9D7D05A7268CB4B1000C45ED /* Repository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Repository.swift; sourceTree = "<group>"; };
 		9DCD64BA268E435600A2CD1D /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
 		9DE4EB6626935C4D0036EFDB /* CountryCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountryCellViewModel.swift; sourceTree = "<group>"; };
+		9DE4EB6826935E710036EFDB /* RandomAccessCollection+Index.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RandomAccessCollection+Index.swift"; sourceTree = "<group>"; };
 		9DF6C31E268A15A200E107E5 /* Countries.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Countries.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9DF6C321268A15A200E107E5 /* CountriesApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountriesApp.swift; sourceTree = "<group>"; };
 		9DF6C323268A15A200E107E5 /* CountriesListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountriesListView.swift; sourceTree = "<group>"; };
@@ -117,6 +119,7 @@
 				9D7D05A5268CA82C000C45ED /* Sort.swift */,
 				9D7D05A7268CB4B1000C45ED /* Repository.swift */,
 				9DCD64BA268E435600A2CD1D /* MapView.swift */,
+				9DE4EB6826935E710036EFDB /* RandomAccessCollection+Index.swift */,
 				9DF6C325268A15A400E107E5 /* Assets.xcassets */,
 				9DF6C327268A15A400E107E5 /* Preview Content */,
 			);
@@ -290,6 +293,7 @@
 				9DF6C34C268A175200E107E5 /* CountriesListViewModel.swift in Sources */,
 				9D7D05A6268CA82C000C45ED /* Sort.swift in Sources */,
 				9D7D05A8268CB4B1000C45ED /* Repository.swift in Sources */,
+				9DE4EB6926935E710036EFDB /* RandomAccessCollection+Index.swift in Sources */,
 				9D52604A268D10D000429270 /* CountryCell.swift in Sources */,
 				9DE4EB6726935C4D0036EFDB /* CountryCellViewModel.swift in Sources */,
 			);
