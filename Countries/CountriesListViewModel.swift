@@ -10,59 +10,64 @@ import SwiftUI
 extension CountriesListView {
   final class ViewModel: ObservableObject {
     @Published var searchText = ""
-    @Published var isGrouped: Bool = false
-    @Published var showFavoriteOnly: Bool = false
-    @Published private var all = [Country]()
-    
-    @Published var currentSort = Sort.byName(ascending: true) {
+    @Published var isGrouped: Bool = false {
       didSet {
-        guard !isGrouped else { return }
-        switch currentSort {
-        case .byName(let ascending):
-          all = local.fetchAllSortByName(ascending: ascending, showFavoriteOnly: showFavoriteOnly)
-        case .byPopulation(let ascending):
-          all = local.fetchAllSortByPopulation(ascending: ascending, showFavoriteOnly: showFavoriteOnly)
-        case .byArea(let ascending):
-          all = local.fetchAllSortByArea(ascending: ascending, showFavoriteOnly: showFavoriteOnly)
-        }
+        update()
       }
     }
+    @Published var showFavoriteOnly: Bool = false {
+      didSet {
+        update()
+      }
+    }
+    @Published var currentSort = Sort.byName(ascending: true) {
+      didSet {
+        update()
+      }
+    }
+    @Published var isLoaded = false
+    @Published private var all = [Country]()
     
-    var isLoaded = false
+    let regions = ["Africa", "Americas", "Asia", "Europe", "Oceania"]
+    var sectionName: String { "Count: \(rows.count)" }
+    var showIndex: Bool { searchText.isEmpty }
+    private let remote = RemoteRepository()
+    private let local = LocalRepository()
     
     var rows: [CountryCell.ViewModel] {
       guard searchText.isEmpty else {
-        let countries = local.fetch(keywords: searchText, sort: currentSort)
+        let countries = local.fetch(keywords: searchText, sort: currentSort, showFavoriteOnly: showFavoriteOnly)
         return countries.enumerated().map { CountryCell.ViewModel(country: $1, keywords: searchText, index: $0) }
       }
       return all.enumerated().map { CountryCell.ViewModel(country: $1, keywords: searchText, index: $0) }
     }
     
-    let regions = ["Africa", "Americas", "Asia", "Europe", "Oceania"]
-    private let remote = RemoteRepository()
-    private let local = LocalRepository()
-    var sectionName: String { "Count: \(rows.count)" }
-    var showIndex: Bool { searchText.isEmpty }
-
+    func rowsForSection(section: String) -> [CountryCell.ViewModel] {
+      local.fetch(region: section, keywords: searchText, sort: currentSort, showFavoriteOnly: showFavoriteOnly).enumerated().map { CountryCell.ViewModel(country: $1, keywords: searchText, index: $0) }
+    }
+    
     func load() async {
-      all = local.fetchAllSortByName(showFavoriteOnly: showFavoriteOnly)
+      update()
       if all.isEmpty {
         await refresh()
+      } else {
+        isLoaded = true
       }
-      isLoaded = true
     }
     
     func refresh() async {
       do {
         all = try await remote.fetchAll()
         local.save(countries: all)
+        isLoaded = true
       } catch {
         print(error)
       }
     }
     
-    func rowsForSection(section: String) -> [CountryCell.ViewModel] {
-      local.fetch(region: section, keywords: searchText, sort: currentSort, showFavoriteOnly: showFavoriteOnly).enumerated().map { CountryCell.ViewModel(country: $1, keywords: searchText, index: $0) }
+    private func update() {
+      guard !isGrouped else { return }
+      all = local.fetch(sort: currentSort, showFavoriteOnly: showFavoriteOnly)
     }
   }
 }

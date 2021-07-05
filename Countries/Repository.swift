@@ -18,44 +18,38 @@ struct RemoteRepository {
 }
 
 struct LocalRepository {
-  func fetchAllSortByName(ascending: Bool = true, showFavoriteOnly: Bool = false) -> [Country] {
-    do {
-      var result = try Realm().objects(CountryObject.self)
-      if showFavoriteOnly {
-        result = result.filter("isFavorite_ == true")
-      }
-      return Array(result
-                    .sorted(byKeyPath: "name_", ascending: ascending))
-    } catch {
-      print(error)
-      return []
-    }
-  }
+#if DEBUG
+  static var count = 0
+#endif
   
-  func fetchAllSortByPopulation(ascending: Bool = true, showFavoriteOnly: Bool = false) -> [Country] {
-    do {
-      var result = try Realm().objects(CountryObject.self)
-      if showFavoriteOnly {
-        result = result.filter("isFavorite_ == true")
-      }
-      return Array(result
-                    .filter("population_ > 0")
-                    .sorted(byKeyPath: "population_", ascending: ascending))
-    } catch {
-      print(error)
-      return []
+  func fetch(region: String = "", keywords: String = "", sort: Sort, showFavoriteOnly: Bool = false) -> [Country] {
+#if DEBUG
+    if region.isEmpty {
+      LocalRepository.count += 1
+      print("fetch \(LocalRepository.count)")
     }
-  }
-  
-  func fetchAllSortByArea(ascending: Bool = true, showFavoriteOnly: Bool = false) -> [Country] {
+#endif
+    
     do {
       var result = try Realm().objects(CountryObject.self)
+      
+      if !region.isEmpty {
+        result = result.filter("region_ == %@", region)
+      }
+      
       if showFavoriteOnly {
         result = result.filter("isFavorite_ == true")
       }
-      return Array(result
-                    .filter("area_ > 0")
-                    .sorted(byKeyPath: "area_", ascending: ascending))
+      
+      if !sort.filter.isEmpty {
+        result = result.filter(sort.filter)
+      }
+      
+      if !keywords.isEmpty {
+        result = result.filter("name_ contains %@ OR capital_ contains %@ OR region_ contains %@", keywords, keywords, keywords)
+      }
+      return Array(result.sorted(byKeyPath: sort.keyPath, ascending: sort.isAscending))
+      
     } catch {
       print(error)
       return []
@@ -87,42 +81,6 @@ struct LocalRepository {
     } catch {
       print(error)
     }
-  }
-  
-  func fetch(keywords: String, sort: Sort, showFavoriteOnly: Bool = false) -> [Country] {
-    do {
-      var result = try Realm().objects(CountryObject.self)
-      if showFavoriteOnly {
-        result = result.filter("isFavorite_ == true")
-      }
-      return Array(result
-                    .filter("name_ contains %@ OR capital_ contains %@ OR region_ contains %@", keywords, keywords, keywords)
-                    .sorted(byKeyPath: sort.keyPath, ascending: sort.isAscending))
-      
-    } catch {
-      print(error)
-      return []
-    }
-  }
-  
-  func fetch(region: String, keywords: String, sort: Sort, showFavoriteOnly: Bool = false) -> [Country] {
-    do {
-      var result = try Realm().objects(CountryObject.self).filter("region_ == %@", region)
-      if showFavoriteOnly {
-        result = result.filter("isFavorite_ == true")
-      }
-      if keywords.isEmpty {
-        return Array(result.sorted(byKeyPath: sort.keyPath, ascending: sort.isAscending))
-      } else {
-        return Array(result
-                      .filter("name_ contains %@ OR capital_ contains %@", keywords, keywords)
-                      .sorted(byKeyPath: sort.keyPath, ascending: sort.isAscending))
-      }
-    } catch {
-      print(error)
-      return []
-    }
-    
   }
 }
 

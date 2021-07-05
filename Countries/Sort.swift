@@ -54,6 +54,17 @@ enum Sort: CaseIterable, Equatable, Identifiable {
     }
   }
   
+  var filter: String {
+    switch self {
+    case .byName(_):
+      return ""
+    case .byPopulation(_):
+      return "population_ > 0"
+    case .byArea(_):
+      return "area_ > 0"
+    }
+  }
+  
   var isAscending: Bool {
     switch self {
     case .byName(let ascending):
