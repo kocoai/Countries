@@ -36,7 +36,7 @@ struct CountriesListView: View {
     ForEach(viewModel.regions, id: \.self) { section in
       Section(viewModel.sectionName(for: section)) {
         ForEach(viewModel.rows(section: section).indexed(), id: \.1.name_) {
-          CountryCell(viewModel: CountryCellViewModel(country: $1, keywords: viewModel.searchText, index: $0))
+          CountryCell(country: $1, keywords: viewModel.searchText, index: $0)
             .listRowSeparator(.hidden)
         }
       }
@@ -46,7 +46,7 @@ struct CountriesListView: View {
   private var plainList: some View {
     Section(viewModel.sectionName()) {
       ForEach(viewModel.rows().indexed(), id: \.1.name_) {
-        CountryCell(viewModel: CountryCellViewModel(country: $1, keywords: viewModel.searchText, index: $0))
+        CountryCell(country: $1, keywords: viewModel.searchText, index: $0)
           .listRowSeparator(.hidden)
       }
     }
@@ -69,15 +69,15 @@ struct CountriesListView: View {
   private var leadingButtons: some View {
     HStack {
       Button {
-        viewModel.isGrouped.toggle()
-      } label: {
-        Image(systemName: viewModel.isGrouped ? "rectangle.grid.1x2" : "list.dash")
-      }
-      
-      Button {
         viewModel.showFavoriteOnly.toggle()
       } label: {
         Image(systemName: viewModel.showFavoriteOnly ? "star.fill" : "star.slash.fill" )
+      }
+      
+      Button {
+        viewModel.isGrouped.toggle()
+      } label: {
+        Image(systemName: viewModel.isGrouped ? "rectangle.grid.1x2" : "list.dash")
       }
     }
   }

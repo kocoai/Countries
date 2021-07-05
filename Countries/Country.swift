@@ -19,6 +19,7 @@ protocol Country {
   var subregion_: String { get }
   var alpha2Code_: String { get }
   var isFavorite_: Bool { get }
+  
 }
 
 struct RestCountry: Decodable, Country {
