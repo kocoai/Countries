@@ -9,19 +9,20 @@ import SwiftUI
 import RealmSwift
 
 struct CountryCell: View {
-  @State var isFavorite: Bool
+  @State private var isFavorite: Bool
   
-  let name: AttributedString
-  let capital: AttributedString?
-  let subregion: AttributedString
-  let population: String?
-  let area: String?
-  let index: Int
-  let primaryKey: String
+  private let name: AttributedString
+  private let capital: AttributedString?
+  private let subregion: AttributedString
+  private let population: String?
+  private let area: String?
+  private let index: Int
+  private let primaryKey: String
   
-  let mapLat: Float
-  let mapLng: Float
-  let mapArea: Float
+  private let mapAlpha2Code: String
+  private let mapLat: Float
+  private let mapLng: Float
+  private let mapArea: Float
   
   init(country: Country, keywords: String, index: Int) {
     mapLat = country.lat_
@@ -35,17 +36,18 @@ struct CountryCell: View {
     subregion = country.subregion_.highlight(keywords)
     population = country.population_ > 0 ? "Population: \(country.population_.formatted)" : nil
     area = country.area_ > 0 ? "Area: \(country.area_.formatted) km2" : nil
+    mapAlpha2Code = country.alpha2Code_
     _isFavorite = .init(initialValue: country.isFavorite_)
   }
   
   var body: some View {
-    NavigationLink(destination: MapView(lat: mapLat, lng: mapLng, area: mapArea).edgesIgnoringSafeArea(.all)) {
+    NavigationLink(destination: MapView(lat: mapLat, lng: mapLng, area: mapArea, alpha2Code: mapAlpha2Code).edgesIgnoringSafeArea(.all)) {
       HStack {
         VStack(alignment: .leading) {
           Text(subregion)
             .font(.caption)
             .foregroundColor(.secondary)
-          HStack {
+          HStack(alignment: .firstTextBaseline) {
             Text(name).font(.title2.bold())
             if isFavorite {
               Image(systemName: "star.fill")

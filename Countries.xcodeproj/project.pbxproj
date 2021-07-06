@@ -108,8 +108,8 @@
 		9DF6C320268A15A200E107E5 /* Countries */ = {
 			isa = PBXGroup;
 			children = (
-				9DF6C349268A15F500E107E5 /* Country.swift */,
 				9DF6C321268A15A200E107E5 /* CountriesApp.swift */,
+				9DF6C349268A15F500E107E5 /* Country.swift */,
 				9DF6C323268A15A200E107E5 /* CountriesListView.swift */,
 				9DF6C34B268A175200E107E5 /* CountriesListViewModel.swift */,
 				9D526049268D10D000429270 /* CountryCell.swift */,

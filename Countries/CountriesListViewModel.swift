@@ -23,8 +23,8 @@ final class CountriesListViewModel: ObservableObject {
     local.fetch(region: section, keywords: searchText, sort: currentSort, showFavoriteOnly: showFavoriteOnly)
   }
   
-  func sectionName(for section: String = "") -> String {
-    (section.isEmpty ? "Count: " : "\(section): ") + "\(rows(section: section).count)"
+  func sectionName(for region: String = "") -> String {
+    (region.isEmpty ? "Count: " : "\(region): ") + "\(rows(section: region).count)"
   }
   
   func load() async {
