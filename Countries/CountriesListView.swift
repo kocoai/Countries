@@ -24,9 +24,9 @@ struct CountriesListView: View {
       .refreshable { await viewModel.refresh() }
       .navigationTitle("Countries")
       .navigationBarItems(leading: leadingButtons, trailing: sortMenu)
-      .onAppear {
+      .task {
         if !viewModel.isLoaded {
-          async { await viewModel.load() }
+          await viewModel.load() 
         }
       }
     }

@@ -19,15 +19,10 @@ struct CountryCell: View {
   private let index: Int
   private let primaryKey: String
   
-  private let mapAlpha2Code: String
-  private let mapLat: Float
-  private let mapLng: Float
-  private let mapArea: Float
+  private let country: Country
   
   init(country: Country, keywords: String, index: Int) {
-    mapLat = country.lat_
-    mapLng = country.lng_
-    mapArea = country.area_
+    self.country = country
     
     primaryKey = country.name_
     self.index = index
@@ -36,12 +31,11 @@ struct CountryCell: View {
     subregion = country.subregion_.highlight(keywords)
     population = country.population_ > 0 ? "Population: \(country.population_.formatted)" : nil
     area = country.area_ > 0 ? "Area: \(country.area_.formatted) km2" : nil
-    mapAlpha2Code = country.alpha2Code_
     _isFavorite = .init(initialValue: country.isFavorite_)
   }
   
   var body: some View {
-    NavigationLink(destination: MapView(lat: mapLat, lng: mapLng, area: mapArea, alpha2Code: mapAlpha2Code).edgesIgnoringSafeArea(.all)) {
+    NavigationLink(destination: MapView(country: country).edgesIgnoringSafeArea(.all)) {
       HStack {
         VStack(alignment: .leading) {
           Text(subregion)
@@ -79,13 +73,13 @@ struct CountryCell: View {
         Button(role: .destructive) {
           toggleFavorite()
         } label: {
-          Label("Unfavorite", systemImage: "star.slash.fill")
+          Label("Unfavorite", systemImage: "star.slash")
         }
       } else {
         Button() {
           toggleFavorite()
         } label: {
-          Label( "Favorite", systemImage: "star.fill")
+          Label( "Favorite", systemImage: "star")
         }
         .tint(.blue)
       }
