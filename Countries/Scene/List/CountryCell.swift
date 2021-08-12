@@ -35,7 +35,7 @@ struct CountryCell: View {
   }
   
   var body: some View {
-    NavigationLink(destination: MapView(country: country).edgesIgnoringSafeArea(.all)) {
+    NavigationLink(destination: DetailView(country: country).edgesIgnoringSafeArea(.all)) {
       HStack {
         VStack(alignment: .leading) {
           Text(subregion)

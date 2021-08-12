@@ -11,7 +11,9 @@
 		9D7D05A6268CA82C000C45ED /* Sort.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D7D05A5268CA82C000C45ED /* Sort.swift */; };
 		9D7D05A8268CB4B1000C45ED /* Repository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D7D05A7268CB4B1000C45ED /* Repository.swift */; };
 		9D7D05AB268CB77B000C45ED /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 9D7D05AA268CB77B000C45ED /* RealmSwift */; };
-		9DCD64BB268E435600A2CD1D /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DCD64BA268E435600A2CD1D /* MapView.swift */; };
+		9DCCC274269A72FF009138A5 /* Language.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DCCC273269A72FF009138A5 /* Language.swift */; };
+		9DCCC27A269A78EE009138A5 /* DetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DCCC279269A78EE009138A5 /* DetailViewModel.swift */; };
+		9DCD64BB268E435600A2CD1D /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DCD64BA268E435600A2CD1D /* DetailView.swift */; };
 		9DE4EB6926935E710036EFDB /* RandomAccessCollection+Index.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DE4EB6826935E710036EFDB /* RandomAccessCollection+Index.swift */; };
 		9DF6C322268A15A200E107E5 /* CountriesApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DF6C321268A15A200E107E5 /* CountriesApp.swift */; };
 		9DF6C324268A15A200E107E5 /* CountriesListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DF6C323268A15A200E107E5 /* CountriesListView.swift */; };
@@ -44,7 +46,9 @@
 		9D526049268D10D000429270 /* CountryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountryCell.swift; sourceTree = "<group>"; };
 		9D7D05A5268CA82C000C45ED /* Sort.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sort.swift; sourceTree = "<group>"; };
 		9D7D05A7268CB4B1000C45ED /* Repository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Repository.swift; sourceTree = "<group>"; };
-		9DCD64BA268E435600A2CD1D /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
+		9DCCC273269A72FF009138A5 /* Language.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Language.swift; sourceTree = "<group>"; };
+		9DCCC279269A78EE009138A5 /* DetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewModel.swift; sourceTree = "<group>"; };
+		9DCD64BA268E435600A2CD1D /* DetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailView.swift; sourceTree = "<group>"; };
 		9DE4EB6826935E710036EFDB /* RandomAccessCollection+Index.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RandomAccessCollection+Index.swift"; sourceTree = "<group>"; };
 		9DF6C31E268A15A200E107E5 /* Countries.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Countries.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9DF6C321268A15A200E107E5 /* CountriesApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountriesApp.swift; sourceTree = "<group>"; };
@@ -85,6 +89,43 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		9DCCC275269A7306009138A5 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				9DCCC273269A72FF009138A5 /* Language.swift */,
+				9DF6C349268A15F500E107E5 /* Country.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		9DCCC276269A78B8009138A5 /* Scene */ = {
+			isa = PBXGroup;
+			children = (
+				9DCCC278269A78D9009138A5 /* Detail */,
+				9DCCC277269A78CE009138A5 /* List */,
+			);
+			path = Scene;
+			sourceTree = "<group>";
+		};
+		9DCCC277269A78CE009138A5 /* List */ = {
+			isa = PBXGroup;
+			children = (
+				9DF6C323268A15A200E107E5 /* CountriesListView.swift */,
+				9DF6C34B268A175200E107E5 /* CountriesListViewModel.swift */,
+				9D526049268D10D000429270 /* CountryCell.swift */,
+			);
+			path = List;
+			sourceTree = "<group>";
+		};
+		9DCCC278269A78D9009138A5 /* Detail */ = {
+			isa = PBXGroup;
+			children = (
+				9DCD64BA268E435600A2CD1D /* DetailView.swift */,
+				9DCCC279269A78EE009138A5 /* DetailViewModel.swift */,
+			);
+			path = Detail;
+			sourceTree = "<group>";
+		};
 		9DF6C315268A15A200E107E5 = {
 			isa = PBXGroup;
 			children = (
@@ -108,14 +149,11 @@
 		9DF6C320268A15A200E107E5 /* Countries */ = {
 			isa = PBXGroup;
 			children = (
+				9DCCC276269A78B8009138A5 /* Scene */,
+				9DCCC275269A7306009138A5 /* Model */,
 				9DF6C321268A15A200E107E5 /* CountriesApp.swift */,
-				9DF6C349268A15F500E107E5 /* Country.swift */,
-				9DF6C323268A15A200E107E5 /* CountriesListView.swift */,
-				9DF6C34B268A175200E107E5 /* CountriesListViewModel.swift */,
-				9D526049268D10D000429270 /* CountryCell.swift */,
 				9D7D05A5268CA82C000C45ED /* Sort.swift */,
 				9D7D05A7268CB4B1000C45ED /* Repository.swift */,
-				9DCD64BA268E435600A2CD1D /* MapView.swift */,
 				9DE4EB6826935E710036EFDB /* RandomAccessCollection+Index.swift */,
 				9DF6C325268A15A400E107E5 /* Assets.xcassets */,
 				9DF6C327268A15A400E107E5 /* Preview Content */,
@@ -284,13 +322,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				9DF6C324268A15A200E107E5 /* CountriesListView.swift in Sources */,
-				9DCD64BB268E435600A2CD1D /* MapView.swift in Sources */,
+				9DCCC274269A72FF009138A5 /* Language.swift in Sources */,
+				9DCD64BB268E435600A2CD1D /* DetailView.swift in Sources */,
 				9DF6C34A268A15F500E107E5 /* Country.swift in Sources */,
 				9DF6C322268A15A200E107E5 /* CountriesApp.swift in Sources */,
 				9DF6C34C268A175200E107E5 /* CountriesListViewModel.swift in Sources */,
 				9D7D05A6268CA82C000C45ED /* Sort.swift in Sources */,
 				9D7D05A8268CB4B1000C45ED /* Repository.swift in Sources */,
 				9DE4EB6926935E710036EFDB /* RandomAccessCollection+Index.swift in Sources */,
+				9DCCC27A269A78EE009138A5 /* DetailViewModel.swift in Sources */,
 				9D52604A268D10D000429270 /* CountryCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -22,20 +22,12 @@ protocol Country {
   var isFavorite_: Bool { get }
   var borders_: [String] { get }
   var neighboringCountries_: [Country] { get }
+  var nativeName_: String { get }
+  var timezones_: [String] { get }
+  var languages_: [Language] { get }
 }
 
 struct RestCountry: Decodable, Country {
-  var name: String
-  var capital: String
-  var population: Int
-  var area: Float?
-  var region: String
-  var latlng: [Float]
-  var subregion: String
-  var alpha2Code: String
-  var alpha3Code: String
-  var borders: [String]
-  
   var name_: String { name }
   var capital_: String { capital }
   var population_: Int { population }
@@ -49,10 +41,26 @@ struct RestCountry: Decodable, Country {
   var isFavorite_: Bool { false }
   var borders_: [String] { borders }
   var neighboringCountries_: [Country] { fatalError() }
+  var nativeName_: String { nativeName }
+  var timezones_: [String] { timezones }
+  var languages_: [Language] { languages }
+  
+  let name: String
+  let capital: String
+  let population: Int
+  let area: Float?
+  let region: String
+  let latlng: [Float]
+  let subregion: String
+  let alpha2Code: String
+  let alpha3Code: String
+  let borders: [String]
+  let nativeName: String
+  let timezones: [String]
+  let languages: [RestLanguage]
 }
 
 final class CountryObject: Object, Country {
-  
   @objc dynamic var name_ = ""
   @objc dynamic var capital_ = ""
   @objc dynamic var population_ = 0
@@ -64,7 +72,15 @@ final class CountryObject: Object, Country {
   @objc dynamic var alpha2Code_ = ""
   @objc dynamic var alpha3Code_ = ""
   @objc dynamic var isFavorite_ = false
+  @objc dynamic var nativeName_ = ""
+  
   var borders_: [String] { Array(borders) }
+  let borders = List<String>()
+  var timezones_: [String] { Array(timezones) }
+  let timezones = List<String>()
+  var languages_: [Language] { Array(languages) }
+  let languages = List<LanguageObject>()
+  
   var neighboringCountries_: [Country] {
     do {
       let realm = try Realm()
@@ -76,8 +92,6 @@ final class CountryObject: Object, Country {
       return []
     }
   }
-  let borders = List<String>()
-  
   
   override class func primaryKey() -> String? {
     return "name_"
@@ -95,16 +109,13 @@ final class CountryObject: Object, Country {
     self.lng_ = country.lng_
     self.alpha2Code_ = country.alpha2Code_
     self.alpha3Code_ = country.alpha3Code_
+  }
+  
+  func updateDetail(with country: Country) {
+    self.nativeName_ = country.nativeName_
     self.borders.append(objectsIn: country.borders_)
-//    do {
-//      let realm = try Realm()
-//
-//      country.borders_.forEach {
-//        borders.append(objectsIn: realm.objects(CountryObject.self).filter("alpha3Code_ == %@", $0))
-//      }
-//    } catch {
-//      print(error)
-//    }
+    self.timezones.append(objectsIn: country.timezones_)
+    self.languages.append(objectsIn: country.languages_.map(LanguageObject.init))
   }
 }
 

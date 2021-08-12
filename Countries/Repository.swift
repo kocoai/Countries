@@ -15,6 +15,12 @@ struct RemoteRepository {
     let (data, _) = try await URLSession.shared.data(for: URLRequest(url: url))
     return try JSONDecoder().decode([RestCountry].self, from: data)
   }
+  
+  func fetch(code: String) async throws -> Country {
+    guard let url = URL(string: "https://restcountries.eu/rest/v2/alpha/\(code)") else { throw RepositoryError.invalidURL }
+    let (data, _) = try await URLSession.shared.data(for: URLRequest(url: url))
+    return try JSONDecoder().decode(RestCountry.self, from: data)
+  }
 }
 
 struct LocalRepository {
@@ -56,6 +62,21 @@ struct LocalRepository {
       }
     } catch {
       print(error)
+    }
+  }
+  
+  func save(country: Country) -> CountryObject? {
+    do {
+      let realm = try Realm()      
+      let object = CountryObject(country)
+      object.updateDetail(with: country)
+      try realm.write {
+        realm.add(object, update: .all)
+      }
+      return object
+    } catch {
+      print(error)
+      return nil
     }
   }
   
