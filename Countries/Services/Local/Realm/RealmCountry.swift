@@ -9,25 +9,27 @@ import Foundation
 import RealmSwift
 
 final class RealmCountry: Object, Country {
-  @objc dynamic var name_ = ""
-  @objc dynamic var capital_ = ""
-  @objc dynamic var population_ = 0
-  @objc dynamic var region_ = ""
-  @objc dynamic var area_: Float = 0
-  @objc dynamic var lat_: Float = 0
-  @objc dynamic var lng_: Float = 0
-  @objc dynamic var subregion_ = ""
-  @objc dynamic var alpha2Code_ = ""
-  @objc dynamic var alpha3Code_ = ""
-  @objc dynamic var isFavorite_ = false
-  @objc dynamic var nativeName_ = ""
+  @Persisted var name_ = ""
+  @Persisted var capital_ = ""
+  @Persisted var population_ = 0
+  @Persisted var region_ = ""
+  @Persisted var area_: Float = 0
+  @Persisted var lat_: Float = 0
+  @Persisted var lng_: Float = 0
+  @Persisted var subregion_ = ""
+  @Persisted var alpha2Code_ = ""
+  @Persisted (primaryKey: true) var alpha3Code_ = ""
+  @Persisted var isFavorite_ = false
+  @Persisted var nativeName_ = ""
   
   var borders_: [String] { Array(borders) }
-  let borders = List<String>()
+  @Persisted var borders = List<String>()
+  
   var timezones_: [String] { Array(timezones) }
-  let timezones = List<String>()
+  @Persisted var timezones = List<String>()
+  
   var languages_: [Language] { Array(languages) }
-  let languages = List<RealmLanguage>()
+  @Persisted var languages = List<RealmLanguage>()
   
   var neighboringCountries_: [Country] {
     do {
@@ -39,10 +41,6 @@ final class RealmCountry: Object, Country {
       print(error)
       return []
     }
-  }
-  
-  override class func primaryKey() -> String? {
-    return "alpha3Code_"
   }
   
   convenience init(_ country: Country) {

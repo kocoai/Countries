@@ -25,4 +25,3 @@ protocol Country {
   var timezones_: [String] { get }
   var languages_: [Language] { get }
 }
-

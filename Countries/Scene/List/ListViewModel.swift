@@ -16,7 +16,6 @@ final class ListViewModel: ObservableObject {
   @Published var isLoaded = false
   
   let regions = ["Africa", "Americas", "Asia", "Europe", "Oceania"]
-  var showIndex: Bool { searchText.isEmpty }
   private let countriesUseCase: CountriesUseCase
   let countryUseCase: CountryUseCase
   

@@ -17,11 +17,19 @@ struct DetailView: View {
   }
   
   var body: some View {
+    VStack {
+      mapView
+      infoView
+    }
+    .task {
+      await viewModel.load()
+    }
+  }
+  
+  var mapView: some View {
     ZStack {
-      VStack {
-        Map(coordinateRegion: $viewModel.coordinate)
-        infoView
-      }
+      Map(coordinateRegion: $viewModel.coordinate)
+      
       // flag
       VStack {
         HStack {
@@ -38,9 +46,19 @@ struct DetailView: View {
         }
         Spacer()
       }
-    }
-    .task {
-      await viewModel.load()
+      
+      VStack {
+        Spacer()
+        HStack {
+          Spacer()
+          Button {
+            viewModel.toggleFavorite()
+          } label: {
+            Image(systemName: viewModel.isFavorite ? "star.fill" : "star")
+          }
+          .padding()
+        }
+      }
     }
   }
   

@@ -20,6 +20,7 @@ final class DetailViewModel: ObservableObject {
   @Published var area: Float = 0.0
   @Published var neighboringCountries = ""
   @Published var timeZones = ""
+  @Published var isFavorite = false
   
   var hasNeighboringCountries: Bool { !country.borders_.isEmpty }
   var hasTimeZones: Bool { !country.timezones_.isEmpty }
@@ -70,5 +71,11 @@ final class DetailViewModel: ObservableObject {
     nativeName = country.nativeName_
     neighboringCountries = country.neighboringCountries_.map { $0.name_ }.joined(separator: ", ")
     timeZones = country.timezones_.joined(separator: ", ")
+    isFavorite = country.isFavorite_
+  }
+  
+  func toggleFavorite() {
+    isFavorite.toggle()
+    countryUseCase.toggleFavorite(alpha3Code: country.alpha3Code_)
   }
 }
