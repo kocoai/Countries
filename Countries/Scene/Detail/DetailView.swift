@@ -15,6 +15,7 @@ struct DetailView: View {
   init(country: Country) {
     _viewModel = StateObject(wrappedValue: DetailViewModel(country: country))
   }
+  
   var body: some View {
     ZStack {
       VStack {
@@ -39,7 +40,7 @@ struct DetailView: View {
       }
     }
     .task {
-      await viewModel.loadDetail()
+      await viewModel.load()
     }
   }
   

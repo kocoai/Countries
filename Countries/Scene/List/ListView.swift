@@ -1,5 +1,5 @@
 //
-//  CountriesListView.swift
+//  ListView.swift
 //  Countries
 //
 //  Created by Kien on 28/06/2021.
@@ -7,8 +7,8 @@
 
 import SwiftUI
 
-struct CountriesListView: View {
-  @StateObject private var viewModel = CountriesListViewModel()
+struct ListView: View {
+  @StateObject private var viewModel = ListViewModel()
   
   var body: some View {
     NavigationView {
@@ -36,7 +36,7 @@ struct CountriesListView: View {
     ForEach(viewModel.regions, id: \.self) { section in
       Section(viewModel.sectionName(for: section)) {
         ForEach(viewModel.rows(section: section).indexed(), id: \.1.name_) {
-          CountryCell(country: $1, keywords: viewModel.searchText, index: $0)
+          CountryCell(country: $1, keywords: viewModel.searchText, index: $0, useCase: viewModel.countryUseCase)
             .listRowSeparator(.hidden)
         }
       }
@@ -46,7 +46,7 @@ struct CountriesListView: View {
   private var plainList: some View {
     Section(viewModel.sectionName()) {
       ForEach(viewModel.rows().indexed(), id: \.1.name_) {
-        CountryCell(country: $1, keywords: viewModel.searchText, index: $0)
+        CountryCell(country: $1, keywords: viewModel.searchText, index: $0, useCase: viewModel.countryUseCase)
           .listRowSeparator(.hidden)
       }
     }
@@ -93,11 +93,10 @@ struct CountriesListView: View {
       }
     }
   }
-
 }
 
 struct ContentView_Previews: PreviewProvider {
   static var previews: some View {
-    CountriesListView()
+    ListView()
   }
 }

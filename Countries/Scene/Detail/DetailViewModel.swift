@@ -20,17 +20,32 @@ final class DetailViewModel: ObservableObject {
   @Published var area: Float = 0.0
   @Published var neighboringCountries = ""
   @Published var timeZones = ""
- 
+  
   var hasNeighboringCountries: Bool { !country.borders_.isEmpty }
   var hasTimeZones: Bool { !country.timezones_.isEmpty }
   
-  private let remote = RemoteRepository()
-  private let local = LocalRepository()
-  private let country: Country
+  private var country: Country
+  private let countryUseCase: CountryUseCase
   
-  init(country: Country) {
+  init(country: Country, countryUseCase: CountryUseCase = BasicCountryUseCase()) {
     self.country = country
-    
+    self.countryUseCase = countryUseCase
+  }
+  
+  func load() async {
+    update(with: country) // load cached data
+    guard country.nativeName_.isEmpty else { return }
+    do {
+      let country = try await countryUseCase.fetch(alphaCode: country.alpha3Code_)
+      if let savedCountry = countryUseCase.save(country: country) {
+        update(with: savedCountry)
+      }
+    } catch {
+      print(error)
+    }
+  }
+  
+  private func update(with country: Country) {
     let delta: Double
     if country.area_ < 10000 {
       delta = 0.1
@@ -52,23 +67,6 @@ final class DetailViewModel: ObservableObject {
     subregion = country.subregion_
     population = country.population_
     area = country.area_
-    
-    updateDetail(with: country)
-  }
-  
-  func loadDetail() async {
-    guard country.nativeName_.isEmpty else { return }
-    do {
-      let country = try await remote.fetch(code: country.alpha3Code_)
-      if let detail = local.save(country: country) {
-        updateDetail(with: detail)
-      }
-    } catch {
-      print(error)
-    }
-  }
-  
-  func updateDetail(with country: Country) {
     nativeName = country.nativeName_
     neighboringCountries = country.neighboringCountries_.map { $0.name_ }.joined(separator: ", ")
     timeZones = country.timezones_.joined(separator: ", ")

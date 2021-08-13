@@ -17,15 +17,13 @@ struct CountryCell: View {
   private let population: String?
   private let area: String?
   private let index: Int
-  private let primaryKey: String
-  
   private let country: Country
+  private let useCase: CountryUseCase
   
-  init(country: Country, keywords: String, index: Int) {
+  init(country: Country, keywords: String, index: Int, useCase: CountryUseCase) {
     self.country = country
-    
-    primaryKey = country.name_
     self.index = index
+    self.useCase = useCase
     name = country.name_.highlight(keywords)
     capital = country.capital_.isEmpty ? nil : country.capital_.highlight(keywords)
     subregion = country.subregion_.highlight(keywords)
@@ -84,12 +82,11 @@ struct CountryCell: View {
         .tint(.blue)
       }
     }
-    .id(primaryKey)
   }
   
   func toggleFavorite() {
     isFavorite.toggle()
-    LocalRepository().toggleFavorite(countryName: primaryKey)
+    useCase.toggleFavorite(alpha3Code: country.alpha3Code_)
   }
 }
 
