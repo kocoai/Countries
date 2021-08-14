@@ -13,11 +13,11 @@ struct ListView: View {
   var body: some View {
     NavigationView {
       List {
-        if viewModel.isGrouped {
-          groupedList
-        } else {
-          plainList
-        }
+        plainList
+//        if viewModel.isGrouped {
+//          groupedList
+//        } else {
+//        }
       }
       .searchable(text: $viewModel.searchText)
       .disableAutocorrection(true)
@@ -32,21 +32,21 @@ struct ListView: View {
     }
   }
   
-  private var groupedList: some View {
-    ForEach(viewModel.regions, id: \.self) { section in
-      Section(viewModel.sectionName(for: section)) {
-        ForEach(viewModel.rows(section: section).indexed(), id: \.1.name_) {
-          CountryCell(country: $1, keywords: viewModel.searchText, index: $0, useCase: viewModel.countryUseCase)
-            .listRowSeparator(.hidden)
-        }
-      }
-    }
-  }
+//  private var groupedList: some View {
+//    ForEach(viewModel.regions, id: \.self) { section in
+//      Section(viewModel.sectionName(for: section)) {
+//        ForEach(viewModel.rows(section: section).indexed(), id: \.1.name_) {
+//          CountryCell(country: $1, keywords: viewModel.searchText, index: $0, useCase: viewModel.countryUseCase)
+//            .listRowSeparator(.hidden)
+//        }
+//      }
+//    }
+//  }
   
   private var plainList: some View {
     Section(viewModel.sectionName()) {
-      ForEach(viewModel.rows().indexed(), id: \.1.name_) {
-        CountryCell(country: $1, keywords: viewModel.searchText, index: $0, useCase: viewModel.countryUseCase)
+      ForEach(viewModel.countries.indexed(), id: \.1.alpha3Code_) {
+        CountryCell(country: $1, keywords: viewModel.searchText, index: $0, useCase: viewModel.useCase)
           .listRowSeparator(.hidden)
       }
     }

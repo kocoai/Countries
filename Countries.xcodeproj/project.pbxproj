@@ -14,8 +14,7 @@
 		9D28604B26C69D4F009C759F /* RealmCountry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D28604A26C69D4F009C759F /* RealmCountry.swift */; };
 		9D28604D26C69D87009C759F /* RealmLanguage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D28604C26C69D87009C759F /* RealmLanguage.swift */; };
 		9D28604F26C6C668009C759F /* LocalService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D28604E26C6C668009C759F /* LocalService.swift */; };
-		9D28605626C6F542009C759F /* CountriesUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D28605526C6F542009C759F /* CountriesUseCase.swift */; };
-		9D28605826C70ACC009C759F /* CountryUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D28605726C70ACC009C759F /* CountryUseCase.swift */; };
+		9D28605626C6F542009C759F /* UseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D28605526C6F542009C759F /* UseCase.swift */; };
 		9D52604A268D10D000429270 /* CountryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D526049268D10D000429270 /* CountryCell.swift */; };
 		9D7D05A6268CA82C000C45ED /* Sort.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D7D05A5268CA82C000C45ED /* Sort.swift */; };
 		9D7D05A8268CB4B1000C45ED /* RealmRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D7D05A7268CB4B1000C45ED /* RealmRepository.swift */; };
@@ -59,8 +58,7 @@
 		9D28604A26C69D4F009C759F /* RealmCountry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmCountry.swift; sourceTree = "<group>"; };
 		9D28604C26C69D87009C759F /* RealmLanguage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmLanguage.swift; sourceTree = "<group>"; };
 		9D28604E26C6C668009C759F /* LocalService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalService.swift; sourceTree = "<group>"; };
-		9D28605526C6F542009C759F /* CountriesUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountriesUseCase.swift; sourceTree = "<group>"; };
-		9D28605726C70ACC009C759F /* CountryUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountryUseCase.swift; sourceTree = "<group>"; };
+		9D28605526C6F542009C759F /* UseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UseCase.swift; sourceTree = "<group>"; };
 		9D526049268D10D000429270 /* CountryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountryCell.swift; sourceTree = "<group>"; };
 		9D7D05A5268CA82C000C45ED /* Sort.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sort.swift; sourceTree = "<group>"; };
 		9D7D05A7268CB4B1000C45ED /* RealmRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmRepository.swift; sourceTree = "<group>"; };
@@ -165,8 +163,7 @@
 		9D28605426C6EFB4009C759F /* UseCases */ = {
 			isa = PBXGroup;
 			children = (
-				9D28605526C6F542009C759F /* CountriesUseCase.swift */,
-				9D28605726C70ACC009C759F /* CountryUseCase.swift */,
+				9D28605526C6F542009C759F /* UseCase.swift */,
 			);
 			path = UseCases;
 			sourceTree = "<group>";
@@ -183,8 +180,8 @@
 		9DCCC276269A78B8009138A5 /* Scene */ = {
 			isa = PBXGroup;
 			children = (
-				9DCCC278269A78D9009138A5 /* Detail */,
 				9DCCC277269A78CE009138A5 /* List */,
+				9DCCC278269A78D9009138A5 /* Detail */,
 			);
 			path = Scene;
 			sourceTree = "<group>";
@@ -404,7 +401,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9D28605826C70ACC009C759F /* CountryUseCase.swift in Sources */,
 				9DF6C324268A15A200E107E5 /* ListView.swift in Sources */,
 				9DCCC274269A72FF009138A5 /* Language.swift in Sources */,
 				9D28604526C69C0A009C759F /* RESTLanguage.swift in Sources */,
@@ -415,7 +411,7 @@
 				9DF6C34C268A175200E107E5 /* ListViewModel.swift in Sources */,
 				9D7D05A6268CA82C000C45ED /* Sort.swift in Sources */,
 				9D28604B26C69D4F009C759F /* RealmCountry.swift in Sources */,
-				9D28605626C6F542009C759F /* CountriesUseCase.swift in Sources */,
+				9D28605626C6F542009C759F /* UseCase.swift in Sources */,
 				9D7D05A8268CB4B1000C45ED /* RealmRepository.swift in Sources */,
 				9D28604F26C6C668009C759F /* LocalService.swift in Sources */,
 				9DE4EB6926935E710036EFDB /* RandomAccessCollection+Index.swift in Sources */,

@@ -1,5 +1,5 @@
 //
-//  CountriesUseCase.swift
+//  UseCase.swift
 //  Countries
 //
 //  Created by Kien on 13/08/2021.
@@ -8,19 +8,21 @@
 import Foundation
 import RealmSwift
 
-protocol CountriesUseCase {
+protocol UseCase {
   func search(region: String, keywords: String, sort: Sort, showFavoriteOnly: Bool) -> [Country]
   func fetchAll() async throws -> [Country]
   func save(countries: [Country])
+  func save(country: Country) -> Country?
+  func toggleFavorite(country: Country)
 }
 
-extension CountriesUseCase {
+extension UseCase {
   func search(region: String = "", keywords: String = "", sort: Sort, showFavoriteOnly: Bool = false) -> [Country] {
     return search(region: region, keywords: keywords, sort: sort, showFavoriteOnly: showFavoriteOnly)
   }
 }
 
-struct BasicCountriesUseCase: CountriesUseCase {
+struct BasicUseCase: UseCase {
   private let remote: RemoteService
   private let local: LocalService
   
@@ -39,5 +41,13 @@ struct BasicCountriesUseCase: CountriesUseCase {
   
   func fetchAll() async throws -> [Country] {
     return try await remote.fetchAll()
+  }
+  
+  func save(country: Country) -> Country? {
+    return local.save(country: country)
+  }
+  
+  func toggleFavorite(country: Country) {
+    local.toggleFavorite(country: country)
   }
 }

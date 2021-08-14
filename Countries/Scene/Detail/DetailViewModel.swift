@@ -7,43 +7,24 @@
 
 import SwiftUI
 import MapKit
+import RealmSwift
 
 @MainActor
 final class DetailViewModel: ObservableObject {
+  @ObservedRealmObject var country: RealmCountry
   @Published var coordinate = MKCoordinateRegion()
   @Published var flagURL = ""
-  @Published var name = ""
-  @Published var nativeName = ""
-  @Published var capital = ""
-  @Published var subregion = ""
-  @Published var population = 0
-  @Published var area: Float = 0.0
   @Published var neighboringCountries = ""
   @Published var timeZones = ""
-  @Published var isFavorite = false
   
   var hasNeighboringCountries: Bool { !country.borders_.isEmpty }
-  var hasTimeZones: Bool { !country.timezones_.isEmpty }
+  var hasTimeZones: Bool { !country.timezones_.isEmpty }  
+  private let countryUseCase: UseCase
   
-  private var country: Country
-  private let countryUseCase: CountryUseCase
-  
-  init(country: Country, countryUseCase: CountryUseCase = BasicCountryUseCase()) {
+  init(country: RealmCountry, countryUseCase: UseCase = BasicUseCase()) {
     self.country = country
     self.countryUseCase = countryUseCase
-  }
-  
-  func load() async {
-    update(with: country) // load cached data
-    guard country.nativeName_.isEmpty else { return }
-    do {
-      let country = try await countryUseCase.fetch(alphaCode: country.alpha3Code_)
-      if let savedCountry = countryUseCase.save(country: country) {
-        update(with: savedCountry)
-      }
-    } catch {
-      print(error)
-    }
+    update(with: country)
   }
   
   private func update(with country: Country) {
@@ -61,21 +42,12 @@ final class DetailViewModel: ObservableObject {
       center: CLLocationCoordinate2D (latitude: CLLocationDegrees(country.lat_), longitude: CLLocationDegrees(country.lng_)),
       span: MKCoordinateSpan(latitudeDelta: delta, longitudeDelta: delta)
     )
-    
     flagURL = "https://www.worldatlas.com/r/w425/img/flag/\(country.alpha2Code_.lowercased())-flag.jpg"
-    name = country.name_
-    capital = country.capital_
-    subregion = country.subregion_
-    population = country.population_
-    area = country.area_
-    nativeName = country.nativeName_
     neighboringCountries = country.neighboringCountries_.map { $0.name_ }.joined(separator: ", ")
     timeZones = country.timezones_.joined(separator: ", ")
-    isFavorite = country.isFavorite_
   }
   
   func toggleFavorite() {
-    isFavorite.toggle()
-    countryUseCase.toggleFavorite(alpha3Code: country.alpha3Code_)
+    countryUseCase.toggleFavorite(country: country)
   }
 }

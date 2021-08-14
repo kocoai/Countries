@@ -12,94 +12,60 @@ import RealmSwift
 struct DetailView: View {
   @StateObject private var viewModel: DetailViewModel
   
-  init(country: Country) {
+  init(country: RealmCountry) {
     _viewModel = StateObject(wrappedValue: DetailViewModel(country: country))
   }
   
   var body: some View {
     VStack {
-      mapView
+      Map(coordinateRegion: $viewModel.coordinate).frame(height: 300)
       infoView
-    }
-    .task {
-      await viewModel.load()
-    }
-  }
-  
-  var mapView: some View {
-    ZStack {
-      Map(coordinateRegion: $viewModel.coordinate)
-      
-      // flag
-      VStack {
-        HStack {
-          Spacer()
-          AsyncImage(url: URL(string: viewModel.flagURL)) { img in
-            img.resizable()
-          } placeholder: {
-            ProgressView()
-          }
-          .frame(width: 60, height: 40)
-          .shadow(radius: 10)
-          .padding(.top, 40)
-          .padding(.trailing, 20)
-        }
-        Spacer()
-      }
-      
-      VStack {
-        Spacer()
-        HStack {
-          Spacer()
-          Button {
-            viewModel.toggleFavorite()
-          } label: {
-            Image(systemName: viewModel.isFavorite ? "star.fill" : "star")
-          }
-          .padding()
-        }
-      }
-    }
+    }.navigationBarItems(trailing: Button {
+      viewModel.toggleFavorite()
+    } label: {
+      Image(systemName: viewModel.country.isFavorite_ ? "star.fill" : "star")
+    })
   }
   
   var infoView: some View {
     VStack {
       ScrollView {
         VStack {
-          if viewModel.nativeName != viewModel.name {
-            Text(viewModel.nativeName)
-            Text(viewModel.name)
+          if !viewModel.country.nativeName_.isEmpty && viewModel.country.nativeName_ != viewModel.country.name_ {
+            Text(viewModel.country.nativeName_)
+            Text(viewModel.country.name_)
               .font(.title2.bold())
           } else {
-            Text(viewModel.nativeName)
+            Text(viewModel.country.name_)
           }
         }
         .font(.largeTitle)
         .multilineTextAlignment(.center)
         .padding(.horizontal)
+        .padding(.bottom, 20)
         
         VStack(alignment: .leading) {
-          if !viewModel.capital.isEmpty {
+          if !viewModel.country.capital_.isEmpty {
             HStack {
-              Text("**Capital:** \(viewModel.capital)")
+              Text("**Capital:** \(viewModel.country.capital_)")
               Spacer()
             }
           }
-          if !viewModel.subregion.isEmpty {
+          if !viewModel.country.subregion_.isEmpty {
             HStack {
-              Text("**Region:** \(viewModel.subregion)")
+              Text("**Region:** \(viewModel.country.subregion_)")
               Spacer()
             }
           }
-          if viewModel.population > 0 {
+          if viewModel.country.population_ > 0 {
             HStack {
-              Text("**Population:** \(viewModel.population.formatted)")
+              Text("**Population:** \(viewModel.country.population_.formatted)")
               Spacer()
             }
           }
-          if viewModel.area > 0 {
+          if viewModel.country.area_ > 0 {
             HStack {
-              Text("**Area:** \(viewModel.area.formatted) km2")
+              Text("**Area:** \(viewModel.country.area_.formatted) km2")
               Spacer()
             }
           }
@@ -117,6 +83,15 @@ struct DetailView: View {
           }
         }
         .padding(.horizontal)
+        .padding(.bottom, 20)
+        
+        AsyncImage(url: URL(string: viewModel.flagURL)) { img in
+          img.resizable()
+        } placeholder: {
+          ProgressView()
+        }
+        .aspectRatio(contentMode: .fit)
+        .frame(height: 100)
       }
       Spacer()
     }

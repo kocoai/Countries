@@ -8,7 +8,8 @@
 import Foundation
 import RealmSwift
 
-final class RealmCountry: Object, Country {
+final class RealmCountry: Object, Country, ObjectKeyIdentifiable {
+  @Persisted(primaryKey: true) var alpha3Code_ = ""
   @Persisted var name_ = ""
   @Persisted var capital_ = ""
   @Persisted var population_ = 0
@@ -18,7 +19,6 @@ final class RealmCountry: Object, Country {
   @Persisted var lng_: Float = 0
   @Persisted var subregion_ = ""
   @Persisted var alpha2Code_ = ""
-  @Persisted (primaryKey: true) var alpha3Code_ = ""
   @Persisted var isFavorite_ = false
   @Persisted var nativeName_ = ""
   
@@ -45,6 +45,10 @@ final class RealmCountry: Object, Country {
   
   convenience init(_ country: Country) {
     self.init()
+    update(with: country)
+  }
+  
+  func update(with country: Country) {
     self.name_ = country.name_
     self.area_ = country.area_
     self.population_ = country.population_
@@ -55,9 +59,6 @@ final class RealmCountry: Object, Country {
     self.lng_ = country.lng_
     self.alpha2Code_ = country.alpha2Code_
     self.alpha3Code_ = country.alpha3Code_
-  }
-  
-  func updateDetail(with country: Country) {
     self.nativeName_ = country.nativeName_
     self.borders.append(objectsIn: country.borders_)
     self.timezones.append(objectsIn: country.timezones_)

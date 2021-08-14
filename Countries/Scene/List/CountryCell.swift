@@ -9,19 +9,17 @@ import SwiftUI
 import RealmSwift
 
 struct CountryCell: View {
-  @State private var isFavorite: Bool
-  
+  @ObservedRealmObject private var country: RealmCountry
   private let name: AttributedString
   private let capital: AttributedString?
   private let subregion: AttributedString
   private let population: String?
   private let area: String?
   private let index: Int
-  private let country: Country
-  private let useCase: CountryUseCase
+  private let useCase: UseCase
   
-  init(country: Country, keywords: String, index: Int, useCase: CountryUseCase) {
-    self.country = country
+  init(country: RealmCountry, keywords: String, index: Int, useCase: UseCase) {
+    _country = .init(wrappedValue: country)
     self.index = index
     self.useCase = useCase
     name = country.name_.highlight(keywords)
@@ -29,7 +27,6 @@ struct CountryCell: View {
     subregion = country.subregion_.highlight(keywords)
     population = country.population_ > 0 ? "Population: \(country.population_.formatted)" : nil
     area = country.area_ > 0 ? "Area: \(country.area_.formatted) km2" : nil
-    _isFavorite = .init(initialValue: country.isFavorite_)
   }
   
   var body: some View {
@@ -41,7 +38,7 @@ struct CountryCell: View {
             .foregroundColor(.secondary)
           HStack(alignment: .firstTextBaseline) {
             Text(name).font(.title2.bold())
-            if isFavorite {
+            if country.isFavorite_ {
               Image(systemName: "star.fill")
             }
           }
@@ -67,7 +64,7 @@ struct CountryCell: View {
       }
     }
     .swipeActions(edge: .leading) {
-      if isFavorite {
+      if country.isFavorite_ {
         Button(role: .destructive) {
           toggleFavorite()
         } label: {
@@ -85,8 +82,7 @@ struct CountryCell: View {
   }
   
   func toggleFavorite() {
-    isFavorite.toggle()
-    useCase.toggleFavorite(alpha3Code: country.alpha3Code_)
+    useCase.toggleFavorite(country: country)
   }
 }
 

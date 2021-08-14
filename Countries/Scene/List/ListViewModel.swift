@@ -6,9 +6,11 @@
 //
 
 import SwiftUI
+import RealmSwift
 
 @MainActor
 final class ListViewModel: ObservableObject {
+  @ObservedResults(RealmCountry.self) var countries
   @Published var searchText = ""
   @Published var isGrouped: Bool = false
   @Published var showFavoriteOnly: Bool = false
@@ -16,16 +18,14 @@ final class ListViewModel: ObservableObject {
   @Published var isLoaded = false
   
   let regions = ["Africa", "Americas", "Asia", "Europe", "Oceania"]
-  private let countriesUseCase: CountriesUseCase
-  let countryUseCase: CountryUseCase
+  let useCase: UseCase
   
-  init(countriesUseCase: CountriesUseCase = BasicCountriesUseCase(), countryUseCase: CountryUseCase = BasicCountryUseCase()) {
-    self.countriesUseCase = countriesUseCase
-    self.countryUseCase = countryUseCase
+  init(useCase: UseCase = BasicUseCase()) {
+    self.useCase = useCase
   }
   
   func rows(section: String = "") -> [Country] {
-    countriesUseCase.search(region: section, keywords: searchText, sort: currentSort, showFavoriteOnly: showFavoriteOnly)
+    useCase.search(region: section, keywords: searchText, sort: currentSort, showFavoriteOnly: showFavoriteOnly)
   }
   
   func sectionName(for region: String = "") -> String {
@@ -33,7 +33,7 @@ final class ListViewModel: ObservableObject {
   }
   
   func load() async {
-    if countriesUseCase.search(sort: currentSort).isEmpty {
+    if useCase.search(sort: currentSort).isEmpty {
       await refresh()
     } else {
       isLoaded = true
@@ -42,8 +42,7 @@ final class ListViewModel: ObservableObject {
   
   func refresh() async {
     do {
-      let all = try await countriesUseCase.fetchAll()
-      countriesUseCase.save(countries: all)
+      useCase.save(countries: try await useCase.fetchAll())
       isLoaded = true
     } catch {
       print(error)

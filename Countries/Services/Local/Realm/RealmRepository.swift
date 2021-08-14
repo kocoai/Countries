@@ -55,7 +55,7 @@ struct RealmRepository: LocalService {
     do {
       let realm = try Realm()      
       let object = RealmCountry(country)
-      object.updateDetail(with: country)
+      object.update(with: country)
       try realm.write {
         realm.add(object, update: .all)
       }
@@ -63,6 +63,20 @@ struct RealmRepository: LocalService {
     } catch {
       print(error)
       return nil
+    }
+  }
+  
+  func toggleFavorite(country: Country) {
+    do {
+      let realm = try Realm()
+      try realm.write {
+        if let object = realm.object(ofType: RealmCountry.self, forPrimaryKey: country.alpha3Code_) {
+          object.isFavorite_.toggle()
+          realm.add(object, update: .all)
+        }
+      }
+    } catch {
+      print(error)
     }
   }
 }
