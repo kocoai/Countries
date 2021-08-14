@@ -18,8 +18,8 @@ struct CountryCell: View {
   private let index: Int
   private let useCase: UseCase
   
-  init(country: RealmCountry, keywords: String, index: Int, useCase: UseCase) {
-    _country = .init(wrappedValue: country)
+  init(country: Country, keywords: String, index: Int, useCase: UseCase) {
+    self.country = RealmRepository.realmCountry(of: country)
     self.index = index
     self.useCase = useCase
     name = country.name_.highlight(keywords)

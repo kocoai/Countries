@@ -7,12 +7,11 @@
 
 import SwiftUI
 import MapKit
-import RealmSwift
 
 struct DetailView: View {
   @StateObject private var viewModel: DetailViewModel
   
-  init(country: RealmCountry) {
+  init(country: Country) {
     _viewModel = StateObject(wrappedValue: DetailViewModel(country: country))
   }
   

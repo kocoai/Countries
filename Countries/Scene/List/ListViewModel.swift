@@ -10,14 +10,13 @@ import RealmSwift
 
 @MainActor
 final class ListViewModel: ObservableObject {
-  @ObservedResults(RealmCountry.self) var countries
   @Published var searchText = ""
   @Published var isGrouped: Bool = false
   @Published var showFavoriteOnly: Bool = false
   @Published var currentSort = Sort.byName(ascending: true)
   @Published var isLoaded = false
   
-  let regions = ["Africa", "Americas", "Asia", "Europe", "Oceania"]
+  let groups = ["Africa", "Americas", "Asia", "Europe", "Oceania"]
   let useCase: UseCase
   
   init(useCase: UseCase = BasicUseCase()) {

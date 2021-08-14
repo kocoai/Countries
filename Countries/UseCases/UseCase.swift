@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import RealmSwift
 
 protocol UseCase {
   func search(region: String, keywords: String, sort: Sort, showFavoriteOnly: Bool) -> [Country]

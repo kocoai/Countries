@@ -21,8 +21,8 @@ final class DetailViewModel: ObservableObject {
   var hasTimeZones: Bool { !country.timezones_.isEmpty }  
   private let countryUseCase: UseCase
   
-  init(country: RealmCountry, countryUseCase: UseCase = BasicUseCase()) {
-    self.country = country
+  init(country: Country, countryUseCase: UseCase = BasicUseCase()) {
+    self.country = RealmRepository.realmCountry(of: country) 
     self.countryUseCase = countryUseCase
     update(with: country)
   }

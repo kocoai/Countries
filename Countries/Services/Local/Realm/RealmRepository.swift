@@ -17,21 +17,16 @@ struct RealmRepository: LocalService {
       if !region.isEmpty {
         result = result.filter("region_ == %@", region)
       }
-      
       if showFavoriteOnly {
         result = result.filter("isFavorite_ == true")
       }
-      
       if !sort.filter.isEmpty {
         result = result.filter(sort.filter)
       }
-      
       if !keywords.isEmpty {
         result = result.filter("name_ CONTAINS[cd] %@ OR capital_ CONTAINS[cd] %@ OR subregion_ CONTAINS[cd] %@", keywords, keywords, keywords)
       }
-      
       return Array(result.sorted(byKeyPath: sort.keyPath, ascending: sort.isAscending))
-      
     } catch {
       print(error)
       return []
@@ -79,6 +74,19 @@ struct RealmRepository: LocalService {
       print(error)
     }
   }
+  
+  static func realmCountry(of country: Country) -> RealmCountry {
+    if let country = country as? RealmCountry {
+      return country
+    }
+    if let object = try? Realm().object(ofType: RealmCountry.self, forPrimaryKey: country.alpha3Code_) {
+      print("Something wrong 1")
+      return object
+    }
+    print("Something wrong 2")
+    return RealmCountry(country)
+  }
+  
 }
 
 enum RepositoryError: Error {
